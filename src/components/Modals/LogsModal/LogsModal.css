@@ -1,0 +1,124 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Z-index muy alto para estar sobre todo */
+  padding: 1rem;
+  /* Respetar safe areas */
+  padding-top: max(1rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  /* Prevenir cualquier tipo de scroll */
+  overflow: hidden;
+  touch-action: none;
+}
+
+.modal-content {
+  background: var(--modal-content-bg-color);
+  box-shadow: 0 5px 10px var(--modal-content-bg-shadow-color);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - 4rem); /* Altura máxima respetando padding */
+  max-height: calc(100dvh - 4rem);
+  overflow: hidden;
+  color: var(--text-color);
+  position: relative;
+  /* Prevenir que el modal crezca más allá de la ventana */
+  contain: layout;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.logs-modal {
+  max-width: 600px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.logs-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  max-height: calc(100vh - 200px); /* Ajustar según header y footer */
+  max-height: calc(100dvh - 200px);
+  min-height: 200px;
+}
+
+.no-logs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.log-item {
+  background: transparent;
+  color: var(--text-color);
+  font-size: 12px;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: left;
+  word-wrap: break-word;
+  line-height: 1.4;
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  padding-left: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-btn {
+  flex: 1;
+  border: none;
+  border-radius: var(--input-border-radius);
+  padding: 0.8rem 1rem;
+  color: var(--text-color);
+  background: var(--input-background-color);
+  box-shadow: 0 1px 10px var(--input-shadow-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.footer-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.footer-btn:active {
+  transform: translateY(0);
+}

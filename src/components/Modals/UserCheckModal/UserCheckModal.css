@@ -1,0 +1,106 @@
+.user-check-modal {
+  max-width: 400px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--text-color);
+}
+
+.spinner {
+  font-size: 3rem;
+  color: var(--text-color);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  color: var(--text-color);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: normal;
+}
+
+.info-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #00ff15;
+}
+
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: #ff6b6b;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Z-index muy alto para estar sobre todo */
+  padding: 1rem;
+  /* Respetar safe areas */
+  padding-top: max(1rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  /* Prevenir cualquier tipo de scroll */
+  overflow: hidden;
+  touch-action: none;
+}
+
+.modal-content {
+  background: var(--modal-content-bg-color);
+  box-shadow: 0 5px 10px var(--modal-content-bg-shadow-color);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  max-height: calc(100vh - 4rem); /* Altura máxima respetando padding */
+  max-height: calc(100dvh - 4rem);
+  overflow: hidden;
+  color: var(--text-color);
+  position: relative;
+  /* Prevenir que el modal crezca más allá de la ventana */
+  contain: layout;
+}
