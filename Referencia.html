@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon BD Tunnel - Custom Logo Button</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<style>
+  * {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::placeholder {
+    color: #8ca4b3;
+  }  body {
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0B1426 0%, #1A2332 50%, #1E293B 100%);
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+  }  ::-webkit-scrollbar-thumb {
+    background: #2563EB;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3B82F6;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px) scale(0.99); /* Reducido el desplazamiento y escala */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-5px) scale(0.99); /* Cambiado a -5px para que suba al cerrar */
+    }
+  }
+
+  /* Mejorando las transiciones generales */
+  .dialog-body-content-marker {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Mejorando la animación del PowerIcon */
+  .power-icon-disconnecting {
+    animation: spinReverseAndFadeOutBorder 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes buttonGlow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 5px var(--glow-color-start), 0 0 10px var(--glow-color-start), 0 0 15px var(--glow-color-end), 0 0 20px var(--glow-color-end);
+      transform: scale(1);
+    }
+
+    50% {
+      box-shadow: 0 0 10px var(--glow-color-start), 0 0 20px var(--glow-color-start), 0 0 30px var(--glow-color-end), 0 0 40px var(--glow-color-end);
+      transform: scale(1.03);
+    }
+  }
+
+  @keyframes spinBorder {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinReverseAndFadeOutBorder {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(-360deg);
+      border-top-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      border-left-color: transparent !important;
+    }
+  }
+
+  .power-icon-connecting {
+    animation: spinBorder 1s linear infinite;
+  }
+
+  .power-icon-disconnecting {
+    animation: spinReverseAndFadeOutBorder 1s linear forwards;
+  }
+
+</style>
+
+<body>  <div id="root"></div>  <script>    const APP_PRIMARY_BACKGROUND = 'linear-gradient(135deg, #000000 0%, #0A0F1A 50%, #111827 100%)';
+    const CARD_BACKGROUND_COLOR = 'rgba(17, 24, 39, 0.95)';
+    const INPUT_BACKGROUND_COLOR = 'rgba(0, 0, 0, 0.6)';    const PRIMARY_ACCENT_COLOR = '#1e40af';
+    const SECONDARY_ACCENT_COLOR = '#2563eb';
+    const BUTTON_BACKGROUND_COLOR = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.12)`;
+    const BUTTON_BORDER_COLOR = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.4)`;
+    // Removed hover color constants since this is a mobile app
+    const ICON_COLOR = PRIMARY_ACCENT_COLOR;    const TEXT_COLOR = '#F8FAFC';
+    const SECONDARY_TEXT_COLOR = '#94A3B8';    
+    const TOOLS_BUTTON_BACKGROUND_COLOR = 'rgba(30, 41, 59, 0.15)';
+    // Removed hover background color for mobile app
+    const VPN_STOPPED_COLOR = '#dc2626';
+    const VPN_STARTING_COLOR = '#3B82F6';
+    const VPN_RUNNING_COLOR = '#06B6D4';
+    const CHECKUSER_TEXT_COLOR = TEXT_COLOR;
+    const LOGGER_TEXT_COLOR = SECONDARY_TEXT_COLOR;    const DIALOG_BACKDROP_COLOR = 'rgba(0, 0, 0, 0.75)';    const DIALOG_CONTENT_BACKGROUND_COLOR = 'rgba(10, 15, 25, 0.98)';
+    const DIALOG_HEADER_TITLE_COLOR = TEXT_COLOR;
+    const DIALOG_HEADER_CLOSE_BUTTON_COLOR = TEXT_COLOR;
+    const DIALOG_FOOTER_BUTTON_COLOR = 'rgba(0,0,0,0.4)';
+    const DIALOG_FOOTER_BUTTON_TEXT_COLOR = TEXT_COLOR;
+    const DIALOG_FOOTER_BUTTON_HOVER_COLOR = 'rgba(0,0,0,0.3)';
+
+    function hexToRgb(hex) { let r = 0, g = 0, b = 0; if (hex.length == 4) { r = parseInt(hex[1] + hex[1], 16); g = parseInt(hex[2] + hex[2], 16); b = parseInt(hex[3] + hex[3], 16); } else if (hex.length == 7) { r = parseInt(hex[1] + hex[2], 16); g = parseInt(hex[3] + hex[4], 16); b = parseInt(hex[5] + hex[6], 16); } return `${r},${g},${b}`; }
+
+    const LINK_SUPPORT = 'https://t.me/unique_solution1'; const TERMS_URL = 'https://t.me/unique_solution1'; const URL_SPEEDTEST = 'https://fast.com'; const URL_YOUTUBE = 'https://www.youtube.com/embed/JnX7Oc8LqD8'; const URL_MP3 = 'https://server16.mp3quran.net/abdulazizasiri/Rewayat-Hafs-A-n-Assem/002.mp3';
+
+    class Component { constructor(element) { this.element = element; } addEventListener(event, listener) { this.element.addEventListener(event, listener); } append(component) { if (component instanceof Component) this.element.appendChild(component.element); else this.element.append(component); } appendChild(component) { this.append(component); } remove() { this.element.remove(); } contains(component) { if (component instanceof Component) return this.element.contains(component.element); else return this.element.contains(component); } }
+    class StyledComponent extends Component { constructor(element, styles = {}) { super(element); this.styles = styles; this.setStyles(styles); } setStyles(styles) { Object.assign(this.element.style, styles); } }
+
+    class Toast extends StyledComponent {
+      constructor(element, styles = {}) { super(element, styles); }
+      showToast(message, type, duration = 3000) {
+        this.element.innerHTML = message;
+        this.setStyles({ wordWrap: 'break-word', width: 'auto', minWidth: '220px', maxWidth: '400px', textAlign: 'center', display: 'block', position: 'fixed', bottom: '5%', left: '50%', transform: 'translateX(-50%)', color: '#FFFFFF', padding: '14px 22px', borderRadius: '10px', opacity: '0', transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out', zIndex: '10000', boxShadow: `0 5px 20px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.25)`, fontWeight: '500', background: 'rgba(0,0,0,0.9)', });
+        switch (type) { case 'success': this.element.style.background = `linear-gradient(135deg, ${VPN_RUNNING_COLOR}, ${PRIMARY_ACCENT_COLOR}cc)`; break; case 'error': this.element.style.background = `linear-gradient(135deg, ${VPN_STOPPED_COLOR}, #d96c2fcc)`; break; case 'info': default: this.element.style.background = `linear-gradient(135deg, #506690, #3a506bcc)`; break; }
+        setTimeout(() => { this.setStyles({ opacity: '1', transform: 'translateX(-50%) translateY(-10px)' }); }, 100);
+        setTimeout(() => this.hideToast(), duration); this.element.addEventListener('click', () => this.hideToast());
+      }
+      hideToast() { this.setStyles({ opacity: '0', transform: 'translateX(-50%) translateY(10px)' }); setTimeout(() => { this.remove(); }, 300); }
+      static success(message, duration = 3000) { const el = document.createElement('div'); document.body.appendChild(el); new Toast(el).showToast(message, 'success', duration); }
+      static error(message, duration = 3000) { const el = document.createElement('div'); document.body.appendChild(el); new Toast(el).showToast(message, 'error', duration); }
+      static info(message, duration = 3000) { const el = document.createElement('div'); document.body.appendChild(el); new Toast(el).showToast(message, 'info', duration); }
+    }
+
+    class AppComponent extends StyledComponent { constructor(element, styles = {}) { super(element, { width: '100%', height: '100vh', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'transparent', ...styles }); } }
+    class CardComponent extends StyledComponent { constructor(styles = {}) { super(document.createElement('div'), { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', width: '92%', maxWidth: '360px', margin: '0 auto', padding: '20px', background: 'transparent', '@media (max-width: 480px)': { padding: '16px', width: '95%' }, ...styles }); } }
+
+    class InputGroupComponent extends StyledComponent { constructor(styles = {}) { super(document.createElement('div'), { display: 'flex', width: '100%', alignItems: 'center', background: INPUT_BACKGROUND_COLOR, color: TEXT_COLOR, padding: '0.6rem 0.8rem', borderRadius: '10px', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.3)', border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`, transition: 'all 0.2s ease-in-out', ...styles }); this.element.addEventListener('focusin', () => this.element.style.borderColor = PRIMARY_ACCENT_COLOR); this.element.addEventListener('focusout', () => this.element.style.borderColor = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`); } append(...components) { components.forEach((c) => super.append(c)); } }
+    class InputComponent extends StyledComponent { constructor(styles = {}) { super(document.createElement('input'), { background: 'transparent', border: 'none', width: '100%', outline: 'none', color: TEXT_COLOR, fontSize: '14px', paddingLeft: '0.4rem', lineHeight: '1.2', ...styles }); } setEnabled(value) { this.element.disabled = !value; this.element.style.opacity = value ? '1' : '0.5'; } }
+    class InputText extends InputComponent { constructor(styles = {}) { super(styles); this.element.type = 'text'; } get value() { return this.element.value; } setPlaceholder(text) { this.element.placeholder = text; } setOnInputListener(cb) { this.addEventListener('input', cb); } setValue(value) { this.element.value = value; } }
+    class InputPassword extends InputText { constructor(styles = {}) { super(styles); this.element.type = 'password'; } setShowing(value) { this.element.type = !value ? 'password' : 'text'; } get isShowing() { return this.element.type !== 'password'; } }
+
+    class SvgComponent extends StyledComponent { constructor(styles = {}, ...paths) { super(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), { fill: ICON_COLOR, padding: '5px', width: '2rem', height: '2rem', flexShrink: '0', ...styles, }); this.applyOptions(); paths.forEach((p) => this.addPath(p)); } applyOptions() { this.setFill(this.styles.fill || ICON_COLOR); this.setWidth(this.styles.width || '2rem'); this.setHeight(this.styles.height || '2rem'); this.setViewBox(this.styles.viewBox || '0 0 16 16'); this.setXmlns(this.styles.xmlns || 'http://www.w3.org/2000/svg'); } setFill(color) { this.element.setAttribute('fill', color); } setWidth(width) { this.element.setAttribute('width', width); } setHeight(height) { this.element.setAttribute('height', height); } setViewBox(viewBox) { this.element.setAttribute('viewBox', viewBox); } setXmlns(xmlns) { this.element.setAttribute('xmlns', xmlns); } addPath(...path) { path.forEach((item) => { const pEl = document.createElementNS('http://www.w3.org/2000/svg', 'path'); pEl.setAttribute('d', item); this.element.appendChild(pEl); }); } }
+    class Spinner extends StyledComponent { constructor() { super(document.createElement('div'), { display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center', padding: '20px' }); const spinnerEl = new StyledComponent(document.createElement('div')); spinnerEl.setStyles({ borderTop: `4px solid ${PRIMARY_ACCENT_COLOR}`, borderRight: '4px solid transparent', borderBottom: `4px solid ${SECONDARY_ACCENT_COLOR}`, borderLeft: '4px solid transparent', borderRadius: '50%', width: '45px', height: '45px', animation: 'spin 0.8s linear infinite', }); this.append(spinnerEl); } }
+    class IconComponent extends SvgComponent { constructor(styles = {}, ...iconPath) { super({ cursor: 'pointer', background: TOOLS_BUTTON_BACKGROUND_COLOR, borderRadius: '12px', height: '44px', width: '44px', padding: '10px', boxShadow: `0 4px 10px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`, fill: ICON_COLOR, ...styles, }, ...iconPath); } }
+    class CalanderIcon extends IconComponent { constructor(s = {}) { super(s, 'M4.684 11.523v-2.3h2.261v-.61H4.684V6.801h2.464v-.61H4v5.332h.684zm3.296 0h.676V8.98c0-.554.227-1.007.953-1.007.125 0 .258.004.329.015v-.613a1.806 1.806 0 0 0-.254-.02c-.582 0-.891.32-1.012.567h-.02v-.504H7.98v4.105zm2.805-5.093c0 .238.192.425.43.425a.428.428 0 1 0 0-.855.426.426 0 0 0-.43.43zm.094 5.093h.672V7.418h-.672v4.105z', 'M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'); } }
+    class LoggerIcon extends IconComponent { constructor(s = {}) { super(s, 'M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z', 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z'); } }
+    class ArrowRepeatIcon extends IconComponent { constructor(s = {}) { super(s, 'M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z', 'M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z'); } }
+    class MoreIcon extends IconComponent { constructor(s = {}) { super(s, 'M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'); } }
+    class PersonIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, width: '1.2rem', height: '1.2rem', ...s }, 'M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z'); } }
+    class LockIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, width: '1.2rem', height: '1.2rem', ...s }, 'M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z'); } }
+    class EyeIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, width: '1.2rem', height: '1.2rem', cursor: 'pointer', ...s }, 'M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z', 'M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z'); } }
+    class NetworkIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, width: '1.5rem', height: '1.5rem', ...s }, 'M4.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM3 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z', 'M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8.5v3a1.5 1.5 0 0 1 1.5 1.5h5.5a.5.5 0 0 1 0 1H10A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5H.5a.5.5 0 0 1 0-1H6A1.5 1.5 0 0 1 7.5 10V7H2a2 2 0 0 1-2-2V4zm1 0v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1zm6 7.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5z'); } }
+    class ArrowDownIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, width: '1.5rem', height: '1.5rem', ...s }, 'M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5zM8 6a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 12.293V6.5A.5.5 0 0 1 8 6z'); } }    class PowerIcon extends StyledComponent {
+      constructor(s = {}) {
+        super(document.createElement('div'), {
+          cursor: 'pointer',
+          height: '120px',
+          width: '120px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          ...s,
+        });
+
+        // Outer ring (progress ring)
+        this.outerRing = new StyledComponent(document.createElement('div'), {
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          borderRadius: '50%',
+          border: `3px solid ${VPN_STOPPED_COLOR}33`,
+          boxSizing: 'border-box',
+          transition: 'all 0.3s ease',
+        });
+
+        // Inner ring (button background)
+        this.innerRing = new StyledComponent(document.createElement('div'), {
+          position: 'relative',
+          width: 'calc(100% - 20px)',
+          height: 'calc(100% - 20px)',
+          borderRadius: '50%',
+          background: 'rgba(0,0,0,0.4)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: `0 0 20px rgba(${hexToRgb(VPN_STOPPED_COLOR)}, 0.2)`,
+          transition: 'all 0.3s ease',
+        });
+
+        // Power icon
+        this.powerIconContainer = new StyledComponent(document.createElement('div'), {
+          position: 'relative',
+          width: '40%',
+          height: '40%',
+        });
+
+        // Power icon line
+        this.powerLine = new StyledComponent(document.createElement('div'), {
+          position: 'absolute',
+          top: '0',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '4px',
+          height: '50%',
+          background: VPN_STOPPED_COLOR,
+          borderRadius: '2px',
+          transition: 'all 0.3s ease',
+        });
+
+        // Power icon circle
+        this.powerCircle = new StyledComponent(document.createElement('div'), {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100%',
+          height: '100%',
+          border: `4px solid ${VPN_STOPPED_COLOR}`,
+          borderRadius: '50%',
+          boxSizing: 'border-box',
+          transition: 'all 0.3s ease',
+        });        // Status text
+        this.statusText = new StyledComponent(document.createElement('div'), {
+          position: 'absolute',
+          bottom: '-35px', // Ajustado para evitar solapamientos
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: VPN_STOPPED_COLOR,
+          fontSize: '12px', // Tamaño de fuente más compacto
+          fontWeight: '600',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          transition: 'all 0.3s ease',
+          whiteSpace: 'nowrap',          textShadow: '0 2px 4px rgba(0,0,0,0.4)', // Sombra mejorada para legibilidad
+          zIndex: '2', // Mayor z-index para asegurar visibilidad
+          padding: '4px 8px', // Padding para mejorar legibilidad
+          borderRadius: '4px', // Bordes redondeados
+          background: 'rgba(0,0,0,0.6)', // Fondo semi-transparente para mejor contraste
+        });
+
+        // Progress bar for connecting state
+        this.progressRing = new StyledComponent(document.createElement('div'), {
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          borderRadius: '50%',
+          border: '3px solid transparent',
+          borderTopColor: 'transparent',
+          boxSizing: 'border-box',
+          transition: 'all 0.3s ease',
+          opacity: '0',
+        });
+
+        this.append(this.outerRing);
+        this.append(this.innerRing);
+        this.powerIconContainer.append(this.powerLine);
+        this.powerIconContainer.append(this.powerCircle);
+        this.innerRing.append(this.powerIconContainer);
+        this.append(this.progressRing);
+        this.append(this.statusText);        // Removed hover effects for mobile
+      }
+
+      setCircleState(state) {
+        this.element.classList.remove('connecting', 'disconnecting');
+
+        const setColors = (color) => {
+          this.outerRing.setStyles({ borderColor: `${color}33` });
+          this.powerLine.setStyles({ background: color });
+          this.powerCircle.setStyles({ borderColor: color });
+          this.statusText.setStyles({ color: color });
+          this.innerRing.setStyles({ boxShadow: `0 0 20px rgba(${hexToRgb(color)}, 0.2)` });
+        };
+
+        if (state === 'connecting') {
+          setColors(VPN_STARTING_COLOR);
+          this.element.classList.add('connecting');
+          this.progressRing.setStyles({
+            opacity: '1',
+            borderTopColor: VPN_STARTING_COLOR,
+            animation: 'spinBorder 1s linear infinite',
+          });
+          this.statusText.element.textContent = 'CONNECTING';
+        } else if (state === 'connected') {
+          setColors(VPN_RUNNING_COLOR);
+          this.progressRing.setStyles({
+            opacity: '0',
+            animation: 'none',
+          });
+          this.statusText.element.textContent = 'CONNECTED';
+        } else if (state === 'disconnecting') {
+          setColors(VPN_STOPPED_COLOR);
+          this.element.classList.add('disconnecting');
+          this.progressRing.setStyles({
+            opacity: '1',
+            borderTopColor: VPN_STOPPED_COLOR,
+            animation: 'spinReverseAndFadeOutBorder 1s linear forwards',
+          });
+          this.statusText.element.textContent = 'DISCONNECTING';
+        } else {
+          setColors(VPN_STOPPED_COLOR);
+          this.progressRing.setStyles({
+            opacity: '0',
+            animation: 'none',
+          });
+          this.statusText.element.textContent = 'DISCONNECTED';
+        }
+      }
+    }
+
+
+    class DialogComponent extends StyledComponent { 
+    constructor(s = {}) { 
+      super(document.createElement('div'), { 
+        position: 'fixed', 
+        top: '0', 
+        bottom: '0', 
+        left: '0', 
+        right: '0', 
+        height: '100vh', 
+        width: '100vw', 
+        background: DIALOG_BACKDROP_COLOR, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        visibility: 'hidden', 
+        opacity: '0', 
+        zIndex: '9990', 
+        transition: 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1)', 
+        ...s, 
+      }); 
+      this.element.addEventListener('click', (e) => { 
+        if (e.target === this.element) this.close(); 
+      }); 
+      this.onCloseEvent = null; 
+      this.contentInstance = null; 
+    }
+
+    setOnCloseEventListener(cb) { this.onCloseEvent = cb; } setContent(content) { if (!(content instanceof DialogContentComponent)) throw new TypeError('Content must be a DialogContentComponent'); while (this.element.firstChild) this.element.removeChild(this.element.firstChild); this.contentInstance = content; this.append(content); } show() { this.setStyles({ opacity: '1', visibility: 'visible', animation: 'fadeIn 0.3s forwards' }); if (!document.body.contains(this.element)) document.body.append(this.element); } close() {
+      this.setStyles({ 
+        opacity: '0',
+        transform: 'scale(0.99)',
+        animation: 'fadeOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards'
+      });
+      setTimeout(() => { 
+        this.setStyles({ visibility: 'hidden' }); 
+        if (this.onCloseEvent != null) this.onCloseEvent(); 
+      }, 250); 
+    }
+
+    remove() { if (this.contentInstance && typeof this.contentInstance.remove === 'function') { this.contentInstance.remove(); } if (document.body.contains(this.element)) { this.element.remove(); } } }
+    class DialogContentComponent extends StyledComponent { constructor(s = {}) { super(document.createElement('div'), { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch', background: DIALOG_CONTENT_BACKGROUND_COLOR, borderRadius: '16px', maxWidth: '95%', width: '460px', boxShadow: `0 0 40px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`, overflow: 'hidden', maxHeight: '90vh', border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.25)`, '@media (max-width: 480px)': { width: '95%', maxHeight: '95vh', borderRadius: '14px' }, ...s }); this.lastHeader = null; this.lastBody = null; this.lastFooter = null; } setHeader(c) { if (this.lastHeader && typeof this.lastHeader.remove === 'function') this.lastHeader.remove(); this.lastHeader = c; if (c) this.element.insertBefore(c.element, this.element.firstChild); } setBody(c) { if (this.lastBody && typeof this.lastBody.remove === 'function') { this.lastBody.remove(); } const existingBodyDom = this.element.querySelector('.dialog-body-content-marker'); if (existingBodyDom) existingBodyDom.remove(); this.lastBody = c; if (c) { c.element.classList.add('dialog-body-content-marker'); this.append(c); } } setFooter(c) { if (this.lastFooter && typeof this.lastFooter.remove === 'function') this.lastFooter.remove(); this.lastFooter = c; if (c) this.append(c); } remove() { if (this.lastHeader && typeof this.lastHeader.remove === 'function') this.lastHeader.remove(); if (this.lastBody && typeof this.lastBody.remove === 'function') this.lastBody.remove(); if (this.lastFooter && typeof this.lastFooter.remove === 'function') this.lastFooter.remove(); super.remove(); } }
+    class DialogHeaderComponent extends StyledComponent { constructor(s = {}) { super(document.createElement('div'), { display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: '15px', borderBottom: `1px solid rgba(255,255,255,0.1)`, ...s, }); this.title = new StyledComponent(document.createElement('span'), { fontSize: '16px', color: DIALOG_HEADER_TITLE_COLOR, fontWeight: '500' }); this.closeButton = new SvgComponent({ cursor: 'pointer', height: '24px', width: '24px', fill: DIALOG_HEADER_CLOSE_BUTTON_COLOR, padding: '4px', borderRadius: '4px' }, 'M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'); this.closeButton.element.addEventListener('mouseenter', () => this.closeButton.element.style.backgroundColor = 'rgba(255,255,255,0.05)'); this.closeButton.element.addEventListener('mouseleave', () => this.closeButton.element.style.backgroundColor = 'transparent'); this.initialize(); } setTitleText(t) { this.title.element.innerText = t; } setCloseButtonClickListener(cb) { this.closeButton.addEventListener('click', cb); } initialize() { this.append(this.title); this.append(this.closeButton); } }
+
+    class DialogBodyComponent extends StyledComponent {
+      constructor(s = {}) {
+        super(document.createElement('div'), {
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          padding: '22px',
+          overflowY: 'auto',
+          flexGrow: '1',
+          minHeight: '0',
+          ...s
+        });
+      }
+    }
+
+    class DialogFooterComponent extends StyledComponent { constructor(s = {}) { super(document.createElement('div'), { display: 'flex', justifyContent: 'flex-end', gap: '12px', alignItems: 'center', width: '100%', padding: '18px 22px', borderTop: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`, background: `rgba(${hexToRgb(DIALOG_CONTENT_BACKGROUND_COLOR)}, 0.3)`, ...s, }); } addButton(b) { if (!(b instanceof DialogFooterButtonComponent)) throw new TypeError('Button must be a DialogFooterButtonComponent instance'); this.append(b); return this; } }
+    class DialogFooterButtonComponent extends StyledComponent { constructor(text, onclick, s = {}) { super(document.createElement('button'), { fontSize: '14px', fontWeight: '500', color: DIALOG_FOOTER_BUTTON_TEXT_COLOR, background: DIALOG_FOOTER_BUTTON_COLOR, border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', padding: '8px 16px', minWidth: '80px', cursor: 'pointer', boxShadow: 'none', transition: 'background-color 0.2s ease', ...s, }); this.setText(text); this.setClickListener(onclick); this.element.addEventListener('mouseenter', () => { this.element.style.backgroundColor = DIALOG_FOOTER_BUTTON_HOVER_COLOR; this.element.style.borderColor = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.8)`; this.element.style.boxShadow = `0 0 18px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.3)`; }); this.element.addEventListener('mouseleave', () => { this.element.style.backgroundColor = DIALOG_FOOTER_BUTTON_COLOR; this.element.style.borderColor = BUTTON_BORDER_COLOR; this.element.style.boxShadow = `0 0 12px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`; }); this.element.addEventListener('mousedown', () => this.element.style.transform = 'scale(0.96)'); this.element.addEventListener('mouseup', () => this.element.style.transform = 'scale(1)'); } setText(t) { this.element.innerText = t; } setClickListener(cb) { this.addEventListener('click', cb); } }
+
+    class DialogBuilder {
+      constructor(s = {}) {
+        this.dialog = new DialogComponent(s);
+        this.header = new DialogHeaderComponent();
+        this.content = new DialogContentComponent();
+        this.footer = new DialogFooterComponent();
+        this.footerButtons = [];
+        this.content.setHeader(this.header);
+        this.header.setCloseButtonClickListener(() => this.dialog.close());
+      }
+      static create(s = {}) { return new DialogBuilder(s); }
+      setTitle(t) { this.header.setTitleText(t); return this; }
+      setAutoRemove(ar) { this.dialog.setOnCloseEventListener(() => { if (ar) this.dialog.remove(); }); return this; }
+      setBody(bc) { this.content.setBody(bc); return this; }
+      addFooterButton(t, cb) { const b = new DialogFooterButtonComponent(t, cb); this.footerButtons.push(b); return this; }
+
+      setContentStyles(styles) {
+        if (this.content) {
+          this.content.setStyles(styles);
+        }
+        return this;
+      }
+
+      show() {
+        this.dialog.setContent(this.content);
+        if (this.footerButtons.length > 0) {
+          this.content.setFooter(this.footer);
+          this.footerButtons.forEach((b) => { this.footer.addButton(b); });
+        }
+        this.dialog.show();
+        return this;
+      }
+      close() { this.dialog.close(); }
+    }    class ConfigComponent extends StyledComponent {
+      constructor(s = {}, isSelected = false) {
+        super(document.createElement('div'), {
+          display: 'flex',
+          gap: '8px', // Espacio más compacto
+          alignItems: 'center',
+          textAlign: 'left',
+          padding: '8px 10px', // Padding más compacto
+          background: 'rgba(0,0,0,0.2)',
+          width: '100%',
+          borderRadius: '6px', // Border radius más sutil
+          cursor: 'pointer',
+          transition: 'background-color 0.2s ease, border 0.2s ease',
+          border: `1px solid transparent`,
+          marginBottom: '3px', // Espacio más compacto entre items
+          ...s
+        });
+        this.image = document.createElement('img');
+        this.name = document.createElement('span');
+        this.description = document.createElement('span');
+        this.mode = document.createElement('span');
+
+        this.isSelected = isSelected;
+        this.initialize();
+        this.updateSelectedStyle();        // Removed hover effects for mobile
+      }
+
+      setImage(url) { this.image.src = url; }
+      setName(n) { this.name.innerHTML = n; }
+      setDescription(d) { this.description.innerHTML = d; }
+      setMode(m) {
+        if (m) {
+          const modeUpper = m.toUpperCase();
+          if (modeUpper.includes('SSH_DIRECT')) {
+            this.mode.innerHTML = 'PAYLOAD';
+          } else if (modeUpper.includes('SSH_PROXY')) {
+            this.mode.innerHTML = 'SSH';
+          } else if (modeUpper.includes('SSL_DIRECT') || modeUpper.includes('TLS')) {
+            this.mode.innerHTML = 'SSL';
+          } else {
+            this.mode.innerHTML = m;
+          }
+        } else {
+          this.mode.innerHTML = "N/A";
+        }
+      }
+
+      setSelected(selected) {
+        this.isSelected = selected;
+        this.updateSelectedStyle();
+      }
+
+      updateSelectedStyle() {
+        if (this.isSelected) {
+          this.element.style.background = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.20)`;
+          this.element.style.border = `2px solid ${PRIMARY_ACCENT_COLOR}`;
+          this.name.style.color = PRIMARY_ACCENT_COLOR;
+          this.name.style.fontWeight = '700';
+        } else {
+          this.element.style.background = 'rgba(0,0,0,0.2)';
+          this.element.style.border = `2px solid transparent`;
+          this.name.style.color = TEXT_COLOR;
+          this.name.style.fontWeight = '600';
+          const isMouseOver = this.element.matches(':hover');
+          if (isMouseOver) {
+            this.element.style.backgroundColor = 'rgba(0,0,0,0.3)';
+            this.element.style.border = `2px solid ${PRIMARY_ACCENT_COLOR}`;
+          }
+        }
+      }
+
+      initialize() {
+        this.setImageStyles();
+        this.setNameStyles();
+        this.setDescriptionStyles();
+        this.setModeStyles();
+        const textCont = new StyledComponent(document.createElement('div'), { display: 'flex', flexDirection: 'column', flexGrow: '1', gap: '3px' });
+        textCont.append(this.name);
+        textCont.append(this.description);
+        this.append(this.image);
+        this.append(textCont);
+        this.append(this.mode);
+      }      setImageStyles() { 
+        this.image.style.width = '32px'; // Reducir tamaño
+        this.image.style.height = '32px'; 
+        this.image.style.borderRadius = '6px'; 
+        this.image.style.objectFit = 'contain'; 
+      }
+      setNameStyles() { 
+        this.name.style.fontSize = '13px'; // Reducir tamaño de fuente
+        this.name.style.color = TEXT_COLOR; 
+        this.name.style.fontWeight = '500'; // Reducir peso de fuente
+      }
+      setDescriptionStyles() { 
+        this.description.style.fontSize = '11px'; // Reducir tamaño de fuente
+        this.description.style.color = SECONDARY_TEXT_COLOR;
+        this.description.style.opacity = '0.8'; // Añadir transparencia
+      }
+      setModeStyles() { 
+        this.mode.style.fontSize = '10px'; // Reducir tamaño de fuente
+        this.mode.style.color = PRIMARY_ACCENT_COLOR;
+        this.mode.style.fontWeight = '500'; // Reducir peso de fuente
+        this.mode.style.fontStyle = 'italic';
+        this.mode.style.whiteSpace = 'nowrap';
+        this.mode.style.marginLeft = 'auto';
+        this.mode.style.padding = '3px 6px'; // Reducir padding
+        this.mode.style.borderRadius = '4px'; // Reducir border radius
+        this.mode.style.background = `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.08)`; // Reducir opacidad
+      }
+    }
+    class CategoryComponent extends StyledComponent { 
+    constructor(s = {}, items = []) { 
+        super(document.createElement('div'), { 
+            display: 'flex', 
+            flexDirection: 'column',
+            width: '100%',
+            marginBottom: '10px',
+            borderRadius: '12px',
+            background: CARD_BACKGROUND_COLOR,
+            overflow: 'hidden',
+            border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`,
+            ...s,
+        });
+        
+        // Header de la categoría
+        this.header = new StyledComponent(document.createElement('div'), {
+            display: 'flex',
+            alignItems: 'center',
+            padding: '15px 20px',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease',
+            userSelect: 'none',
+        });
+
+        // Flecha indicadora
+        this.arrow = new StyledComponent(document.createElement('div'), {
+            width: '10px',
+            height: '10px',
+            borderRight: `2px solid ${TEXT_COLOR}`,
+            borderBottom: `2px solid ${TEXT_COLOR}`,
+            transform: 'rotate(45deg)',
+            transition: 'transform 0.3s ease',
+            marginLeft: 'auto',
+        });
+
+        // Contenedor para los items
+        this.itemsContainer = new StyledComponent(document.createElement('div'), {
+            display: 'none',
+            flexDirection: 'column',
+            maxHeight: '0',
+            transition: 'max-height 0.3s ease-out',
+            overflow: 'hidden',
+        });
+
+        // Nombre de la categoría
+        this.categoryName = new StyledComponent(document.createElement('div'), {
+            color: TEXT_COLOR,
+            fontSize: '16px',
+            fontWeight: '500',
+        });
+
+        // Agregar elementos al DOM
+        this.header.append(this.categoryName);
+        this.header.append(this.arrow);
+        this.append(this.header);
+        this.append(this.itemsContainer);
+
+        // Estado inicial: cerrado
+        this.isOpen = false;
+
+        // Event listener para el clic
+        this.header.element.addEventListener('click', () => this.toggle());
+
+        // Agregar items si se proporcionaron
+        if (items.length > 0) {
+            this.setItems(items);
+        }
+    }
+
+    toggle() {
+        this.isOpen = !this.isOpen;
+        
+        // Rotar la flecha
+        this.arrow.setStyles({
+            transform: this.isOpen ? 'rotate(-135deg)' : 'rotate(45deg)',
+        });
+
+        // Mostrar/ocultar items
+        this.itemsContainer.setStyles({
+            display: 'flex',
+            maxHeight: this.isOpen ? '1000px' : '0',
+            padding: this.isOpen ? '10px 0' : '0',
+        });
+
+        // Efecto hover en el header
+        this.header.element.addEventListener('mouseover', () => {
+            this.header.setStyles({
+                background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+            });
+        });
+
+        this.header.element.addEventListener('mouseout', () => {
+            this.header.setStyles({
+                background: 'transparent',
+            });
+        });
+    }
+
+    setName(name) {
+        this.categoryName.element.textContent = name;
+    }    setItems(items) {
+        this.itemsContainer.element.innerHTML = '';
+        items.forEach(item => {
+            this.itemsContainer.append(item);
+        });
+    }
+}
+
+class LoggerItemComponent extends StyledComponent { 
+    constructor(s = {}, message) {        super(document.createElement('span'), { 
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif", 
+            width: '100%', 
+            fontSize: '13px',
+            lineHeight: '1.5',
+            color: LOGGER_TEXT_COLOR, 
+            padding: '8px 12px', 
+            borderBottom: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+            transition: 'background-color 0.2s ease',
+            letterSpacing: '0.2px',
+            ...s, 
+        }); 
+        
+        // Limpiar el texto de etiquetas HTML y otros caracteres especiales
+        const cleanText = message
+            .replace(/<[^>]*>/g, '') // Remover todas las etiquetas HTML
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/\s+/g, ' ') // Normalizar espacios
+            .trim();
+            
+        this.element.textContent = cleanText; // Usar textContent en lugar de innerHTML
+        
+        // Añadir efecto hover
+        this.element.addEventListener('mouseover', () => {
+            this.setStyles({ 
+                backgroundColor: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.05)`,
+                borderBottom: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`
+            });
+        });
+        
+        this.element.addEventListener('mouseout', () => {
+            this.setStyles({ 
+                backgroundColor: 'transparent',
+                borderBottom: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`
+            });
+        });
+    } 
+}
+    class LoggerBodyComponent extends DialogBodyComponent { 
+    constructor(s = {}, items = []) { 
+        super({ 
+            flexDirection: 'column', 
+            maxHeight: 'calc(85vh - 150px)', 
+            padding: '20px',
+            background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.03)`,
+            backdropFilter: 'blur(10px)',
+            borderRadius: '12px',
+            border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+            boxShadow: `0 4px 6px rgba(0, 0, 0, 0.1)`,
+            ...s 
+        }); 
+        this.setItems(items); 
+    } 
+    
+    setItems(i) { 
+        this.element.innerHTML = ''; 
+        
+        // Añadir título del log
+        const titleContainer = document.createElement('div');
+        titleContainer.style.marginBottom = '15px';
+        titleContainer.style.padding = '0 8px';
+        titleContainer.style.display = 'flex';
+        titleContainer.style.justifyContent = 'space-between';
+        titleContainer.style.alignItems = 'center';
+        
+        const title = document.createElement('span');
+        title.textContent = 'Sistema de Logs';
+        title.style.color = TEXT_COLOR;
+        title.style.fontSize = '14px';
+        title.style.fontWeight = '600';
+        title.style.letterSpacing = '0.5px';
+        
+        const timestamp = document.createElement('span');
+        timestamp.textContent = new Date().toLocaleTimeString();
+        timestamp.style.color = SECONDARY_TEXT_COLOR;
+        timestamp.style.fontSize = '12px';
+        
+        titleContainer.appendChild(title);
+        titleContainer.appendChild(timestamp);
+        this.element.appendChild(titleContainer);
+        
+        // Añadir los items del log
+        i.forEach(item => this.append(item)); 
+        this.scrollDown(); 
+    } 
+    
+    scrollDown() { 
+        this.element.scrollTop = this.element.scrollHeight; 
+    } 
+}
+    class CheckUserBodyComponent extends DialogBodyComponent {
+      constructor(data = {}) {
+        super({ padding: '28px' }); this.component = new StyledComponent(document.createElement('div'), { display: 'flex', flexDirection: 'column', color: TEXT_COLOR, gap: '12px', width: '100%', }); this.append(this.component);
+        this.usernameLine = this.createLineElement('Username:', 'N/A');
+        this.expirationDateLine = this.createLineElement('Expires on:', 'N/A');
+        this.daysRemainingLine = this.createLineElement('Days remaining:', 'N/A');
+        this.connectionsLine = this.createLineElement('Connections:', 'N/A');
+        this.component.appendChild(this.usernameLine.container); this.component.appendChild(this.expirationDateLine.container); this.component.appendChild(this.daysRemainingLine.container); this.component.appendChild(this.connectionsLine.container);
+        this.intervalId = null; this.expirationDateObj = null;
+        if (data && Object.keys(data).length > 0) { this.setData(data); }
+      }
+      createLineElement(label, initialValue) { const c = document.createElement('div'); c.style.display = 'flex'; c.style.justifyContent = 'space-between'; c.style.padding = '9px 0'; c.style.borderBottom = `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`; const ls = document.createElement('span'); ls.textContent = label; ls.style.fontWeight = '500'; ls.style.color = SECONDARY_TEXT_COLOR; const vs = document.createElement('span'); vs.textContent = initialValue; vs.style.fontWeight = '600'; vs.style.color = TEXT_COLOR; c.appendChild(ls); c.appendChild(vs); return { container: c, labelSpan: ls, valueSpan: vs }; }
+      setData(data) {
+        this.updateLine(this.usernameLine, data.username || 'N/A'); this.updateLine(this.expirationDateLine, this.formatDisplayDate(data.expiration_date) || 'N/A'); this.updateLine(this.connectionsLine, `${data.count_connections || 0} / ${data.limit_connections || '∞'}`);
+        if (this.intervalId) { clearInterval(this.intervalId); this.intervalId = null; }
+        if (data.expiration_date) { this.expirationDateObj = new Date(data.expiration_date); if (isNaN(this.expirationDateObj.getTime())) { this.expirationDateObj = null; this.updateLine(this.daysRemainingLine, 'Invalid Date', VPN_STOPPED_COLOR); } else { this.updateDaysRemainingDisplay(); this.intervalId = setInterval(() => this.updateDaysRemainingDisplay(), 60000); } } else { this.updateLine(this.daysRemainingLine, 'N/A'); this.expirationDateObj = null; }
+      }
+      formatDisplayDate(dateString) { if (!dateString) return 'N/A'; const d = new Date(dateString); if (isNaN(d.getTime())) return dateString; try { return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }); } catch (e) { return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`; } }
+      updateLine(lineObj, value, color = TEXT_COLOR) { lineObj.valueSpan.textContent = value; lineObj.valueSpan.style.color = color; }
+      updateDaysRemainingDisplay() {
+        if (!this.expirationDateObj || isNaN(this.expirationDateObj.getTime())) { this.updateLine(this.daysRemainingLine, 'N/A'); return; }
+        const today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()); const expiryDay = new Date(this.expirationDateObj.getFullYear(), this.expirationDateObj.getMonth(), this.expirationDateObj.getDate());
+        const diffDays = Math.ceil((expiryDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        let txt, clr = TEXT_COLOR;
+        if (diffDays < 0) { txt = `Expired ${Math.abs(diffDays)} day(s) ago`; clr = VPN_STOPPED_COLOR; }
+        else if (diffDays === 0) { txt = 'Expires today'; clr = VPN_STARTING_COLOR; }
+        else { txt = `${diffDays} day(s) remaining`; clr = diffDays <= 7 ? VPN_STARTING_COLOR : VPN_RUNNING_COLOR; }
+        this.updateLine(this.daysRemainingLine, txt, clr);
+      }
+      remove() { if (this.intervalId) { clearInterval(this.intervalId); this.intervalId = null; } super.remove(); }
+    }    class VpnStateComponent extends StyledComponent { 
+  constructor(s = {}) { 
+    super(document.createElement('span'), { 
+      display: 'none', // Ocultar completamente este componente ya que es redundante
+      ...s,
+    });
+    this.setState('DISCONNECTED');
+  }
+  setState(st) {
+    this.element.innerHTML = st;
+  }
+}
+
+    class TopBarInfoComponent extends StyledComponent {
+      constructor(styles = {}) {
+        super(document.createElement('div'), {
+          position: 'fixed',
+          top: `${(window?.DtGetStatusBarHeight?.execute() ?? 20)}px`,
+          left: '0',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '8px 18px',
+          color: SECONDARY_TEXT_COLOR,
+          fontSize: '13.5px',
+          fontWeight: '500',
+          zIndex: '100',
+          pointerEvents: 'none',
+          textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+          ...styles
+        });
+      }
+    }    class LocalIPComponent extends StyledComponent {
+      constructor(s = {}) {
+        super(document.createElement('span'), { minWidth: '125px', textAlign: 'left', whiteSpace: 'nowrap', display: 'none', ...s });
+      }
+    }
+    class NetworkStatsComponent extends StyledComponent {
+      constructor(s = {}) {
+        super(document.createElement('div'), { 
+          display: 'flex', 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          gap: '30px',
+          padding: '16px 24px',
+          background: 'rgba(17, 24, 39, 0.95)',
+          backdropFilter: 'blur(12px)',
+          borderRadius: '12px',
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`,
+          boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          ...s 
+        });
+        
+        // Container de Download
+        this.downCont = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          minWidth: '120px'
+        });
+        
+        this.downLabel = new StyledComponent(document.createElement('div'), {
+          fontSize: '11px',
+          color: SECONDARY_TEXT_COLOR,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          marginBottom: '8px',
+          textAlign: 'center'
+        });
+        this.downLabel.element.textContent = 'Download';
+        
+        this.downStats = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '4px'
+        });
+        
+        this.arrowDown = new ArrowDownShortIcon({ 
+          fill: PRIMARY_ACCENT_COLOR, 
+          width: '16px', 
+          height: '16px' 
+        });
+        
+        this.downText = this.createMeterText();
+        this.downStats.append(this.arrowDown);
+        this.downStats.append(this.downText);
+        this.downCont.append(this.downLabel);
+        this.downCont.append(this.downStats);
+
+        // Container de Upload
+        this.upCont = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          minWidth: '120px'
+        });
+        
+        this.upLabel = new StyledComponent(document.createElement('div'), {
+          fontSize: '11px',
+          color: SECONDARY_TEXT_COLOR,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          marginBottom: '8px',
+          textAlign: 'center'
+        });
+        this.upLabel.element.textContent = 'Upload';
+        
+        this.upStats = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '4px'
+        });
+        
+        this.arrowUp = new ArrowUpShortIcon({ 
+          fill: SECONDARY_ACCENT_COLOR, 
+          width: '16px', 
+          height: '16px' 
+        });
+        
+        this.upText = this.createMeterText();
+        this.upStats.append(this.arrowUp);
+        this.upStats.append(this.upText);
+        this.upCont.append(this.upLabel);
+        this.upCont.append(this.upStats);
+
+        this.append(this.downCont);
+        this.append(this.upCont);
+
+        // Inicializar monitoreo de velocidad
+        this.getDlFn = () => parseFloat(window?.DtGetNetworkDownloadBytes?.execute() ?? 0);
+        this.getUlFn = () => parseFloat(window?.DtGetNetworkUploadBytes?.execute() ?? 0);
+        this.lastDl = this.getDlFn();
+        this.lastUl = this.getUlFn();
+        this.showMeter();
+        setInterval(() => this.showMeter(), 1000);
+      }
+
+      createMeterText() {
+        return new StyledComponent(document.createElement('span'), {
+          fontSize: '15px',
+          color: TEXT_COLOR,
+          fontWeight: '600',
+          fontFamily: '"Inter", sans-serif',
+          textAlign: 'center',
+          whiteSpace: 'nowrap'
+        });
+      }
+
+      formatBytes(bps) {
+        const sz = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s'];
+        if (bps < 0) bps = 0;
+        if (bps === 0) return '0 B/s';
+        const i = parseInt(Math.floor(Math.log(bps) / Math.log(1024)));
+        if (i === 0) return bps + ' ' + sz[i];
+        return (bps / Math.pow(1024, i)).toFixed(2) + ' ' + sz[i];
+      }
+
+      showMeter() {
+        const curDl = this.getDlFn();
+        const curUl = this.getUlFn();
+        const dlSpd = curDl - this.lastDl;
+        const ulSpd = curUl - this.lastUl;
+        this.downText.element.innerHTML = this.formatBytes(dlSpd > 0 ? dlSpd : 0);
+        this.upText.element.innerHTML = this.formatBytes(ulSpd > 0 ? ulSpd : 0);
+        this.lastDl = curDl;
+        this.lastUl = curUl;
+      }
+    }
+    class ArrowDownShortIcon extends SvgComponent { constructor(s = {}) { super({ ...s }, 'M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z'); } }
+    class ArrowUpShortIcon extends SvgComponent { constructor(s = {}) { super({ ...s }, 'M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z'); } }
+
+    class IframeBodyComponent extends DialogBodyComponent {
+      constructor(s = {}, url = null) {
+        super({
+          padding: '0',
+          height: '100%',
+          overflow: 'hidden',
+          background: '#080d1f',
+          flexGrow: '1',
+          minHeight: '0',
+          ...s
+        });
+        this.iframeEl = new StyledComponent(document.createElement('iframe'), {
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          display: 'none'
+        });
+        this.spinner = new Spinner();
+        this.iframeEl.addEventListener('load', () => {
+          this.iframeEl.setStyles({ display: 'block' });
+          this.spinner.setStyles({ display: 'none' });
+        });
+        this.setUrl(url);
+        this.applyOptions();
+        this.append(this.spinner);
+        this.append(this.iframeEl);
+      }
+      setUrl(u) { if (u) this.iframeEl.element.src = u; }
+      applyOptions() {
+        this.iframeEl.element.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        this.iframeEl.element.setAttribute('allowfullscreen', '');
+        this.iframeEl.element.setAttribute('frameborder', '0');
+      }
+    }
+
+    class CleanAppMessageBodyComponent extends DialogBodyComponent { constructor(s = {}) { super({ height: 'auto', ...s }); this.spanComp = new StyledComponent(document.createElement('p'), { fontSize: '16px', lineHeight: '1.6', color: TEXT_COLOR, textAlign: 'center' }); this.spanComp.element.innerHTML = 'Would you like to clear app data? This action will permanently remove all stored information. Are you sure you want to proceed?'; this.append(this.spanComp); } }    class StyledButtonComponent extends StyledComponent { 
+      constructor(text, icon, onclick, s = {}) { 
+        super(document.createElement('button'), { 
+          width: '100%', 
+          borderRadius: '8px', 
+          padding: '10px', 
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`, 
+          color: TEXT_COLOR, 
+          background: 'rgba(0,0,0,0.2)', 
+          boxShadow: 'none', 
+          cursor: 'pointer', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '10px', 
+          transition: 'all 0.2s ease-in-out', 
+          '&:hover': {
+            background: 'rgba(0,0,0,0.3)',
+            borderColor: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)},   0.4)`,
+            transform: 'none'
+          },
+          '@media (max-width: 480px)': { 
+            padding: '10px', 
+            borderRadius: '8px', 
+            gap: '8px' 
+          }, 
+          ...s 
+        }); 
+        
+        this.textComp = new StyledComponent(document.createElement('span'), { 
+          fontSize: '15px', 
+          fontWeight: '500', 
+          '@media (max-width: 480px)': { 
+            fontSize: '14px' 
+          } 
+        }); 
+        
+        this.textComp.element.innerHTML = text; 
+        this.element.addEventListener('click', onclick); 
+        
+        if (icon) { icon.setStyles({ width: '22px', height: '22px', fill: PRIMARY_ACCENT_COLOR, padding: '0' }); this.append(icon); } this.append(this.textComp); } }
+    class BatteryIcon extends SvgComponent { constructor(s = {}) { super(s, 'M2 6h10v4H2V6z', 'M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z'); } }
+    class HeadsetIcon extends SvgComponent { constructor(s = {}) { super(s, 'M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0  0 0-5-5z'); } }    class SpeedMeterIcon extends SvgComponent { constructor(s = {}) { super(s, 'M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 0 1-1 0V2.5A.5.5 0 0 1 8 2zM3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0  1 0 1H2.5A.5.5 0 0 1 2 8zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.389.389 0 0 0-.029-.518z', 'M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.945 11.945 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0z'); } }
+    class TrashIcon extends SvgComponent{ constructor(s = {}) { super(s, 'M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6a.5.5 0 0 0-1 0v6a.5.5 0 0  0 0 0 1 0V6Z', 'M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1  1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z'); } }
+    class ReceptionIcon extends SvgComponent { constructor(s = {}) { super(s, 'M0 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5V4zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5V1z'); } }
+    class InfoIcon extends SvgComponent { constructor(s = {}) { super(s, 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z', 'm8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'); } }
+    class RouterIcon extends SvgComponent { constructor(s = {}) { super({ fill: ICON_COLOR, ...s }, 'M5.525 3.025a3.5 3.5 0 0 1 4.95 0 .5.5 0 1 0 .707-.707 4.5 4.5 0 0 0-6.364 0 .5.5 0 0 0 .707.707ZM6.94 4.44a1.5 1.5 0 0 1 2.12 0 .5.5 0 0 0 .708-.708 2.5 2.5 0 0 0-3.536 0 .5.5 0 0 0 .707.707ZM2.5 11a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm4.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0Zm2.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm1.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0Zm2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0Z', 'M2.974 2.342a.5.5 0 1 0-.948.316L3.806 8H1.5A1.5 1.5 0 0 0 0 9.5v2A1.5 1.5 0 0 0 1.5 13H2a.5.5 0 0 0 .5.5h2A.5.5 0 0 0 5 13h6a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5h.5a1.5 1.5 0 0 0 1.5-1.5v-2A1.5 1.5 0 0 0 14.5 8h-2.306l1.78-5.342a.5.5 0 1 0-.948-.316L11.14 8H4.86L2.974 2.342ZM14.5 9a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h13Z', 'M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z'); } }    class PricingBodyComponent extends DialogBodyComponent {
+      constructor(s = {}) {
+        super({ padding: '0', ...s });        // Header content
+        const headerContent = new StyledComponent(document.createElement('div'), {
+          textAlign: 'center',
+          padding: '24px 24px 24px',
+          marginTop: '10px'
+        });
+
+        const subtitle = new StyledComponent(document.createElement('p'), {          color: SECONDARY_TEXT_COLOR,
+          fontSize: '15px',
+          lineHeight: '1.5',
+          margin: '0',
+          opacity: '0.9'
+        });
+        subtitle.element.textContent = 'Elige el plan perfecto para mantener tu navegación segura y anónima';
+        headerContent.append(subtitle);
+        this.append(headerContent);
+        
+        // Security Features Section
+        const securityFeatures = new StyledComponent(document.createElement('div'), {
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '12px',
+          padding: '0 24px 24px'
+        });
+
+        const createFeatureItem = (icon, text) => {
+          const item = new StyledComponent(document.createElement('div'), {
+            background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+            border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+            padding: '12px',
+            borderRadius: '12px',
+            textAlign: 'center'
+          });
+
+          const iconSpan = new StyledComponent(document.createElement('span'), {
+            fontSize: '24px',
+            marginBottom: '8px',
+            display: 'block'
+          });
+          iconSpan.element.textContent = icon;
+
+          const textSpan = new StyledComponent(document.createElement('span'), {
+            color: TEXT_COLOR,
+            fontSize: '12px',
+            fontWeight: '500'
+          });
+          textSpan.element.textContent = text;
+
+          item.append(iconSpan);
+          item.append(textSpan);
+          return item;
+        };
+
+        // Agregar características de seguridad
+        securityFeatures.append(createFeatureItem('🔒', 'Cifrado AES-256'));
+        securityFeatures.append(createFeatureItem('🌍', '80+ Países'));
+        securityFeatures.append(createFeatureItem('⚡', 'Velocidad Ultra'));
+        securityFeatures.append(createFeatureItem('📱', '5 Dispositivos'));
+
+        // Plans Container
+        const plansContainer = new StyledComponent(document.createElement('div'), {
+          padding: '0 24px 24px'
+        });
+
+        const createPlanCard = (name, duration, price, originalPrice, discount, features, isPopular = false) => {
+          const card = new StyledComponent(document.createElement('div'), {
+            background: 'linear-gradient(145deg, #0f172a 0%, #1e293b 100%)',
+            border: `2px solid ${isPopular ? PRIMARY_ACCENT_COLOR : 'rgba(148, 163, 184, 0.1)'}`,
+            borderRadius: '16px',
+            padding: '24px',
+            marginBottom: '16px',
+            position: 'relative',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+          });
+
+          // Popular badge if applicable
+          if (isPopular) {
+            const popularBadge = new StyledComponent(document.createElement('div'), {
+              position: 'absolute',
+              top: '-12px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: `linear-gradient(135deg, ${PRIMARY_ACCENT_COLOR} 0%, ${SECONDARY_ACCENT_COLOR} 100%)`,
+              color: 'white',
+              padding: '6px 16px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: '600'
+            });
+            popularBadge.element.textContent = 'Más Popular';
+            card.append(popularBadge);
+          }
+
+          // Discount badge if applicable
+          if (discount) {
+            const discountBadge = new StyledComponent(document.createElement('div'), {
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              color: 'white',
+              padding: '4px 12px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: '600',
+              display: 'inline-block',
+              marginBottom: '8px'
+            });
+            discountBadge.element.textContent = `Ahorra ${discount}`;
+            card.append(discountBadge);
+          }
+
+          // Plan header
+          const header = new StyledComponent(document.createElement('div'), {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '16px'
+          });
+
+          const planName = new StyledComponent(document.createElement('div'), {
+            color: TEXT_COLOR,
+            fontSize: '20px',
+            fontWeight: '600'
+          });
+          planName.element.textContent = name;
+
+          const planDuration = new StyledComponent(document.createElement('div'), {
+            color: SECONDARY_TEXT_COLOR,
+            fontSize: '14px',
+            background: 'rgba(148, 163, 184, 0.1)',
+            padding: '4px 12px',
+            borderRadius: '12px'
+          });
+          planDuration.element.textContent = duration;
+
+          header.append(planName);
+          header.append(planDuration);
+
+          // Price section
+          const priceSection = new StyledComponent(document.createElement('div'), {
+            marginBottom: '16px'
+          });
+
+          const priceAmount = new StyledComponent(document.createElement('span'), {
+            color: PRIMARY_ACCENT_COLOR,
+            fontSize: '32px',
+            fontWeight: '700'
+          });
+          priceAmount.element.textContent = price;
+
+          const pricePeriod = new StyledComponent(document.createElement('span'), {
+            color: SECONDARY_TEXT_COLOR,
+            fontSize: '16px'
+          });
+          pricePeriod.element.textContent = '/mes';
+
+          priceSection.append(priceAmount);
+          priceSection.append(pricePeriod);
+
+          if (originalPrice) {
+            const originalPriceSpan = new StyledComponent(document.createElement('span'), {
+              color: SECONDARY_TEXT_COLOR,
+              fontSize: '14px',
+              textDecoration: 'line-through',
+              marginLeft: '8px'
+            });
+            originalPriceSpan.element.textContent = originalPrice;
+            priceSection.append(originalPriceSpan);
+          }
+
+          // Features list
+          const featuresList = new StyledComponent(document.createElement('ul'), {
+            listStyle: 'none',
+            marginBottom: '20px'
+          });
+
+          features.forEach(feature => {
+            const li = new StyledComponent(document.createElement('li'), {
+              color: TEXT_COLOR,
+              fontSize: '14px',
+              marginBottom: '8px',
+              display: 'flex',
+              alignItems: 'center'
+            });
+
+            const checkmark = new StyledComponent(document.createElement('span'), {
+              color: '#10b981',
+              fontWeight: 'bold',
+              marginRight: '12px',
+              width: '16px',
+              height: '16px',
+              background: 'rgba(16, 185, 129, 0.2)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '10px'
+            });
+            checkmark.element.textContent = '✓';
+
+            li.append(checkmark);
+            li.element.appendChild(document.createTextNode(feature));
+            featuresList.append(li);
+          });
+
+          card.append(header);
+          card.append(priceSection);
+          card.append(featuresList);
+
+          // Agregar evento hover
+          card.element.addEventListener('mouseenter', () => {
+            card.setStyles({
+              borderColor: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, ${isPopular ? '1' : '0.3'})`,
+              transform: 'translateY(-2px)',
+              boxShadow: `0 12px 30px rgba(0, 0, 0, 0.3)`
+            });
+          });
+
+          card.element.addEventListener('mouseleave', () => {
+            card.setStyles({
+              borderColor: isPopular ? PRIMARY_ACCENT_COLOR : 'rgba(148, 163, 184, 0.1)',
+              transform: 'translateY(0)',
+              boxShadow: 'none'
+            });
+          });
+
+          return card;
+        };
+
+        // Crear los planes
+        const monthlyPlan = createPlanCard(
+          'Plan Mensual',
+          '1 Mes',
+          '$12.99',
+          null,
+          null,
+          [
+            'Ancho de banda ilimitado',
+            '80+ ubicaciones de servidores',
+            'Soporte 24/7',
+            'Kill Switch automático'
+          ]
+        );
+
+        const yearlyPlan = createPlanCard(
+          'Plan Anual',
+          '12 Meses',
+          '$4.99',
+          '$12.99',
+          '67%',
+          [
+            'Todo del plan mensual',
+            'Acceso a servidores premium',
+            'Protección contra malware',
+            'Split tunneling avanzado',
+            'DNS privado incluido'
+          ],
+          true
+        );
+
+        const semiannualPlan = createPlanCard(
+          'Plan Semestral',
+          '6 Meses',
+          '$7.99',
+          '$12.99',
+          '40%',
+          [
+            'Todo del plan mensual',
+            'Servidores optimizados',
+            'Bloqueo de anuncios',
+            'Configuración automática'
+          ]
+        );
+
+        plansContainer.append(monthlyPlan);
+        plansContainer.append(yearlyPlan);
+        plansContainer.append(semiannualPlan);
+
+        // CTA Section
+        const ctaSection = new StyledComponent(document.createElement('div'), {
+          padding: '24px',
+          borderTop: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`
+        });
+
+        const ctaButton = new StyledComponent(document.createElement('button'), {
+          width: '100%',
+          background: `linear-gradient(135deg, ${PRIMARY_ACCENT_COLOR} 0%, ${SECONDARY_ACCENT_COLOR} 100%)`,
+          color: 'white',
+          border: 'none',
+          padding: '16px',
+          borderRadius: '12px',
+          fontSize: '16px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',          boxShadow: `0 8px 25px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.3)`,
+          marginBottom: '16px'
+        });
+        ctaButton.element.textContent = 'Comenzar Ahora';
+        ctaButton.element.addEventListener('click', () => {
+          Toast.info('Próximamente: Redirigiendo al proceso de pago');
+        });
+
+        const guarantee = new StyledComponent(document.createElement('div'), {
+          textAlign: 'center',
+          color: SECONDARY_TEXT_COLOR,
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px'
+        });
+        guarantee.element.innerHTML = '🛡️ Garantía de devolución de 30 días';
+
+        ctaSection.append(ctaButton);
+        ctaSection.append(guarantee);
+
+        // Append all sections
+        this.append(securityFeatures);
+        this.append(plansContainer);
+        this.append(ctaSection);
+      }
+    }    class WalletIcon extends SvgComponent { 
+      constructor(s = {}) { 
+        super({ ...s }, 'M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z'); 
+      } 
+    }    class BuyAccessButton extends StyledButtonComponent { 
+      constructor() { 
+        super('Comprar Acceso', new WalletIcon({ fill: PRIMARY_ACCENT_COLOR }), () => {
+          // Cerramos el menú lateral usando la referencia global
+          if (window.sideMenuInstance) {
+            window.sideMenuInstance.hide();
+          }
+          
+          setTimeout(() => {
+            const d = DialogBuilder.create({ zIndex: 10000 })
+              .setTitle('COMPRAR ACCESO')
+              .setAutoRemove(true)
+              .setBody(new PricingBodyComponent())
+              .setContentStyles({
+                width: '90vw',
+                maxWidth: '460px',              height: 'auto',
+              maxHeight: '90vh',
+              overflow: 'auto'
+              })
+              .show();
+          }, 300); // Esperamos a que termine la animación del menú
+        }); 
+      }
+    }
+
+    class ApnSettingButton extends StyledButtonComponent { constructor() { super('APN Settings', new ReceptionIcon({ fill: PRIMARY_ACCENT_COLOR }), () => window?.DtStartApnActivity?.execute()); } }
+    class TermsButton extends StyledButtonComponent { constructor() { super('Terms', new InfoIcon({ fill: PRIMARY_ACCENT_COLOR }), () => window?.DtStartWebViewActivity?.execute(TERMS_URL)); } }
+    class BatteryButton extends StyledButtonComponent { constructor() { super('Battery Optimization', new BatteryIcon({ fill: PRIMARY_ACCENT_COLOR }), () => window?.DtIgnoreBatteryOptimizations?.execute()); } }
+    class SupportButton extends StyledButtonComponent { constructor() { super('Support', new HeadsetIcon({ fill: PRIMARY_ACCENT_COLOR }), () => window?.DtStartWebViewActivity?.execute(LINK_SUPPORT)); } }
+
+    class SpeedTestButton extends StyledButtonComponent {
+      constructor() {
+        super('Speed Test', new SpeedMeterIcon({ fill: PRIMARY_ACCENT_COLOR }), () => {
+          const iframeBody = new IframeBodyComponent({}, URL_SPEEDTEST);
+
+          DialogBuilder.create({ zIndex: 10000 })
+            .setTitle('SPEED TEST')
+            .setAutoRemove(true)
+            .setBody(iframeBody)
+            .setContentStyles({
+              width: '90vw',
+              maxWidth: '1200px',
+              height: '85vh',
+            })
+            .show();
+        });
+      }    }
+    class CleanAppButton extends StyledButtonComponent{ constructor() { super('Clean App Data', new TrashIcon({ fill: PRIMARY_ACCENT_COLOR }), () => { const d = DialogBuilder.create().setTitle('CLEAR DATA').setAutoRemove(true).setBody(new CleanAppMessageBodyComponent()).addFooterButton('NO', () => d.close()).addFooterButton('YES', () => window?.DtCleanApp?.execute()).show(); }); } }
+    class HotSpotButton extends StyledButtonComponent { constructor() { super('Hotspot', new RouterIcon({ fill: PRIMARY_ACCENT_COLOR }), () => this.toggleHotSpot()); this.setStyles({ display: 'flex', justifyContent: 'center' }); } startHotSpot() { window?.DtStartHotSpotService?.execute(); Toast.success('Hotspot started successfully!'); } stopHotSpot() { window?.DtStopHotSpotService?.execute(); Toast.success('Hotspot stopped successfully!'); } toggleHotSpot() { (window?.DtGetStatusHotSpotService?.execute() ?? 'STOPPED') === 'RUNNING' ? this.stopHotSpot() : this.startHotSpot(); } }
+    class MenuDialogBodyComponent extends DialogBodyComponent { constructor() { super({ display: 'flex', flexDirection: 'column', gap: '10px', padding: '18px', '@media (max-width: 480px)': { padding: '14px', gap: '8px' } }); } addRowButtons(...buttons) { const el = new StyledComponent(document.createElement('div'), { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%', '@media (max-width: 380px)': { display: 'flex', flexDirection: 'column', gap: '8px' } }); buttons.forEach(b => el.append(b)); this.append(el); return this; } addSingleRowButton(button) { const el = new StyledComponent(document.createElement('div'), { display: 'flex', gap: '10px', width: '100%' }); el.append(button); this.append(el); return this; } }
+
+    class ConfigInputComponent extends InputGroupComponent {
+      constructor() {        super({
+          cursor: 'pointer',
+          marginBottom: '20px',
+          padding: '0.8rem 1.2rem',
+          background: `linear-gradient(135deg, rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1) 0%, rgba(${hexToRgb(SECONDARY_ACCENT_COLOR)}, 0.08) 100%)`,
+          backdropFilter: 'blur(12px)',
+          borderRadius: '14px',
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`,
+          boxShadow: `0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          maxWidth: '90%',
+          margin: '0 auto 20px auto',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          ':hover': {
+            background: `linear-gradient(135deg, rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15) 0%, rgba(${hexToRgb(SECONDARY_ACCENT_COLOR)}, 0.12) 100%)`,
+            transform: 'translateY(-1px)',
+            boxShadow: `0 10px 40px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.15)`
+          }
+        });
+        this.configInput = new InputText({ cursor: 'pointer', fontWeight: '500', fontSize: '14px', color: TEXT_COLOR, pointerEvents: 'none' });
+        this.configInput.setEnabled(false);
+        this.configInput.setPlaceholder('Select Server');
+        this.configInput.setValue(JSON.parse(window?.DtGetDefaultConfig?.execute() ?? '{}').name ?? 'Select Server');
+        const netIcon = new NetworkIcon({ marginRight: '10px', fill: PRIMARY_ACCENT_COLOR, pointerEvents: 'none' });
+        const arrIcon = new ArrowDownIcon({ marginLeft: '10px', fill: PRIMARY_ACCENT_COLOR, pointerEvents: 'none' });
+        this.append(netIcon, this.configInput, arrIcon);
+        this.configure();
+
+        let selectedConfigComponentGlobal = null;
+
+        this.addEventListener('click', () => {
+          if (this.element.style.cursor === 'not-allowed') return;
+          const mock = '[{"sorter":1,"name":"Oceanic Servers","id":1,"items":[{"mode":"V2RAY","sorter":1,"name":"Aqua Prime","icon":"https://cdn-icons-png.flaticon.com/512/2600/2600285.png","id":101,"description":"High-Speed, Low Latency"},{"mode":"SSH_DIRECT-TLSv1.2","sorter":2,"name":"Deep Blue","icon":"https://cdn-icons-png.flaticon.com/512/2600/2600285.png","id":102,"description":"Stable & Secure"},{"mode":"SSH_PROXY","sorter":3,"name":"Coral SSH","icon":"https://cdn-icons-png.flaticon.com/512/2600/2600285.png","id":103,"description":"Basic SSH Proxy"}]},{"sorter":2,"name":"ForestNet","id":2,"items":[{"mode":"OVPN","sorter":1,"name":"Emerald VPN","icon":"https://cdn-icons-png.flaticon.com/512/1999/1999031.png","id":201,"description":"Balanced Performance"}]}]';
+          const items = JSON.parse(window?.DtGetConfigs?.execute() || mock);
+          items.sort((a, b) => a.sorter - b.sorter);
+          items.forEach((i) => i.items.sort((a, b) => a.sorter - b.sorter));
+
+          const currentConfig = JSON.parse(window?.DtGetDefaultConfig?.execute() ?? '{}');
+          const currentSelectedServerId = currentConfig.id;
+          selectedConfigComponentGlobal = null;
+
+          const d = DialogBuilder.create().setTitle('SERVER CONFIGURATION').setAutoRemove(true)
+            .setBody(new ConfigBodyComponent(items.map((i) => {
+              const cat = new CategoryComponent();
+              cat.setName(i.name || "Server Group");
+              cat.setItems(i.items.map((si) => {
+                const isCurrentlySelected = si.id === currentSelectedServerId;
+                const conf = new ConfigComponent({}, isCurrentlySelected);
+                conf.setName(si.name || "Server");
+                conf.setDescription(si.description ?? 'No details');
+                conf.setMode(si.mode || "N/A");
+                conf.setImage(si.icon || `https://placehold.co/40x40/${PRIMARY_ACCENT_COLOR.substring(1)}/0b132b?text=S`);
+
+                if (isCurrentlySelected) {
+                  selectedConfigComponentGlobal = conf;
+                }
+
+                conf.addEventListener('click', () => {
+                  if (selectedConfigComponentGlobal && selectedConfigComponentGlobal !== conf) {
+                    selectedConfigComponentGlobal.setSelected(false);
+                  }
+                  conf.setSelected(true);
+                  selectedConfigComponentGlobal = conf;
+
+                  window?.DtSetConfig?.execute(si.id);
+                  this.configure();
+                  setTimeout(() => d.close(), 200);
+                });
+                return conf;
+              }));
+              return cat;
+            })))
+            .show();
+        });
+        const origClick = window.dtConfigClickListener; window.dtConfigClickListener = () => { if (origClick) origClick(); this.configure(); }; this.configure();
+      }
+      configure() { 
+        const cfg = JSON.parse(window?.DtGetDefaultConfig?.execute() ?? '{}');
+        this.configInput.setValue(cfg.name || 'Select Server');
+        // Reducir el tamaño de la fuente y hacer más minimalista el input
+        this.configInput.setStyles({
+          fontSize: '14px',
+          fontWeight: '500'
+        });
+        const isRun = (window?.DtGetVpnState?.execute() ?? 'DISCONNECTED') !== 'DISCONNECTED';
+        this.element.style.cursor = isRun ? 'not-allowed' : 'pointer';
+        this.element.style.opacity = isRun ? '0.6' : '1';
+        this.element.style.padding = '0.7rem 1rem'; // Reducir el padding
+        this.element.style.borderColor = isRun ? `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)` : `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.25)`;
+      }
+    }    class UserPassInputComponent extends StyledComponent {
+      constructor() {
+        super(document.createElement('div'), { 
+          display: 'flex', 
+          flexDirection: 'column', 
+          marginTop: '0px', 
+          width: '100%',          gap: '10px',
+          maxWidth: '90%',
+          margin: '0 auto',
+          padding: '20px',
+          background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          backdropFilter: 'blur(10px)',
+          borderRadius: '12px',
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+        });
+
+        // Agregar título al contenedor
+        this.title = new StyledComponent(document.createElement('h3'), {
+          color: TEXT_COLOR,
+          fontSize: '16px',
+          fontWeight: '600',
+          textAlign: 'center',
+          marginBottom: '15px',
+          opacity: '0.9'
+        });
+        this.title.element.textContent = 'Credenciales de Acceso';
+        this.append(this.title);        this.userGrp = new InputGroupComponent({}); const pIcon = new PersonIcon({ marginRight: '10px' });    this.userInput = new InputText({ fontWeight: '500', fontSize: '13px', color: TEXT_COLOR });
+    this.userInput.setEnabled(true);
+    this.userInput.setPlaceholder('Username');
+    this.userInput.setValue(window?.DtUsername?.get() ?? '');
+    this.userInput.setOnInputListener(() => window?.DtUsername?.set(this.userInput.value));    this.userGrp.setStyles({ 
+      padding: '0.8rem 1rem',
+      background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+      backdropFilter: 'blur(8px)',
+      borderRadius: '12px',
+      border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      transition: 'all 0.3s ease'
+    });
+    this.userGrp.append(pIcon, this.userInput);
+        this.passGrp = new InputGroupComponent({});        this.passGrp.setStyles({ 
+          padding: '0.8rem 1rem',
+          background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          backdropFilter: 'blur(8px)', 
+          borderRadius: '12px',
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s ease'
+        });
+        const lIconPass = new LockIcon({ marginRight: '10px' }); 
+        this.passInput = new InputPassword(); 
+        const eIcon = new EyeIcon({ marginLeft: '10px', cursor: 'pointer' }); 
+        eIcon.addEventListener('click', () => this.passInput.setShowing(!this.passInput.isShowing)); 
+        this.passInput.setPlaceholder('Password'); 
+        this.passInput.setValue(window?.DtPassword?.get() ?? ''); 
+        this.passInput.setOnInputListener(() => { window?.DtPassword?.set(this.passInput.value); }); 
+        this.passGrp.append(lIconPass, this.passInput, eIcon);        this.uuidGrp = new InputGroupComponent({}); 
+        this.uuidGrp.setStyles({ 
+          padding: '0.8rem 1rem',
+          background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          backdropFilter: 'blur(8px)',
+          borderRadius: '12px', 
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s ease'
+        });
+        const lIconUuid = new LockIcon({ marginRight: '10px' }); 
+        this.uuidInput = new InputPassword(); 
+        this.uuidInput.setPlaceholder('V2Ray UUID'); 
+        this.uuidInput.setValue(window?.DtUuid?.get() ?? ''); 
+        this.uuidInput.setOnInputListener(() => window?.DtUuid?.set(this.uuidInput.value)); 
+        this.uuidGrp.append(lIconUuid, this.uuidInput);
+
+        this.append(this.userGrp);
+        this.append(this.passGrp);
+        this.append(this.uuidGrp);
+
+        const origClick = window.dtConfigClickListener; window.dtConfigClickListener = () => { if (origClick) origClick(); this.configure(); }; this.configure();
+      }      configure() {
+        // Mostrar los campos de usuario y contraseña por defecto
+        this.userGrp.setStyles({ display: 'flex' });
+        this.passGrp.setStyles({ display: 'flex' });
+        // Solo mostrar UUID para V2RAY
+        const cfg = JSON.parse(window?.DtGetDefaultConfig?.execute() ?? '{}');
+        this.uuidGrp.setStyles({ 
+          display: (cfg.mode || '').toUpperCase().includes('V2RAY') ? 'flex' : 'none' 
+        });
+
+        const isRun = (window?.DtGetVpnState?.execute() ?? 'DISCONNECTED') !== 'DISCONNECTED';
+        this.userInput.setEnabled(!isRun);
+        this.passInput.setEnabled(!isRun);
+        this.uuidInput.setEnabled(!isRun);
+      }
+    }    class ButtonAndStateContainerComponent extends StyledComponent {
+      constructor(s = {}) {
+        super(document.createElement('div'), { 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          width: '100%', 
+          marginTop: '1.5rem',
+          paddingBottom: '45px',
+          gap: '35px', // Aumentado el espacio entre elementos
+          ...s 
+        });
+        this.btn = new PowerIcon();
+        this.btn.addEventListener('click', () => {
+          const cs = window?.DtGetVpnState?.execute();
+          if (cs !== 'DISCONNECTED') {
+            window?.DtExecuteVpnStop?.execute();
+          } else {
+            const cn = window.configInputInstance ? window.configInputInstance.configInput.value : '';
+            if (!cn || cn === 'Select Server') {
+              Toast.error('Please select a server first!', 3000); return;
+            }
+          }
+        });
+
+        // Añadir el botón de conexión
+        this.append(this.btn);
+
+        // Añadir el componente de estadísticas de red
+        this.networkStats = new NetworkStatsComponent({
+          marginTop: '15px', // Aumentado el margen superior
+          background: `rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.03)`,
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          borderRadius: '12px',
+          border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`,
+          padding: '12px 20px'
+        });
+        this.append(this.networkStats);
+
+        // Estado de la VPN
+        this.stateComp = new VpnStateComponent();
+        this.append(this.stateComp);
+        this.lastVpnState = null;
+        this.lastShownState = null;
+        window.dtVpnStateListener = (st) => this.onStateChanged(st);
+      }
+
+      onStateChanged(st) {
+        let transState = (window?.DtTranslateText?.execute('LBL_STATE_' + st) ?? st).toUpperCase();
+        let stColor = VPN_STOPPED_COLOR;
+        let glowStart = `${VPN_STOPPED_COLOR}99`;
+        let glowEnd = `${VPN_STOPPED_COLOR}77`;
+
+        if (st === 'CONNECTED') {
+          transState = "CONNECTED";
+          stColor = VPN_RUNNING_COLOR;
+          glowStart = `${VPN_RUNNING_COLOR}aa`;
+          glowEnd = `${VPN_RUNNING_COLOR}88`;
+          if (this.lastShownState !== 'CONNECTED') {
+            Toast.success('Successfully Connected 😊', 2500);
+          }
+        } else if (st === 'DISCONNECTED') {
+          transState = "DISCONNECTED";
+          stColor = VPN_STOPPED_COLOR;
+          if (this.lastShownState && this.lastShownState !== 'DISCONNECTED') {
+            Toast.error('Disconnected 🤯', 2500);
+          }
+        } else {
+          transState = "CONNECTING...";
+          stColor = VPN_STARTING_COLOR;
+          glowStart = `${VPN_STARTING_COLOR}bb`;
+          glowEnd = `${VPN_STARTING_COLOR}99`;
+        }
+        this.lastShownState = st;
+        this.stateComp.setState(transState);
+        this.stateComp.setStyles({ color: stColor, textShadow: `0 0 12px ${stColor}aa` });
+
+        this.btn.setStyles({
+          '--glow-color-start': glowStart,
+          '--glow-color-end': glowEnd
+        });
+
+        if (this.lastVpnState && this.lastVpnState !== 'DISCONNECTED' && st === 'DISCONNECTED') {
+          this.btn.setCircleState('disconnecting');
+          setTimeout(() => {
+            if ((window?.DtGetVpnState?.execute() ?? 'DISCONNECTED') === 'DISCONNECTED') {
+              this.btn.setCircleState('disconnected');
+            }
+          }, 1000);
+        } else if (st === 'CONNECTED') {
+          this.btn.setCircleState('connected');
+        } else if (st === 'DISCONNECTED') {
+          this.btn.setCircleState('disconnected');
+        } else {
+          this.btn.setCircleState('connecting');
+        }
+        this.lastVpnState = st;
+
+        if (window.configInputInstance) window.configInputInstance.configure();
+        if (window.userPassInputInstance) window.userPassInputInstance.configure();
+      }
+    }    class CardToolsComponent extends CardComponent {
+      constructor() {
+        super({ margin: '15px 0 0 0', width: '100%', flexDirection: 'row', justifyContent: 'center', gap: '15px', background: 'transparent', boxShadow: 'none', padding: '8px 0', border: 'none' });
+        this.loggerBody = new LoggerBodyComponent({});
+        this.addArrowRepeatIcon();
+        this.addLoggerIcon();
+        this.addCalanderIcon();
+        this.addMoreButton();
+        window.dtOnNewLogListener = () => this.renderizeLogger();
+        this.renderizeLogger();
+      }
+      addCalanderIcon() {
+        const c = new CalanderIcon({ fill: PRIMARY_ACCENT_COLOR });
+        this.append(c);
+      }
+      addLoggerIcon() { 
+    const l = new LoggerIcon({ fill: PRIMARY_ACCENT_COLOR }); 
+    l.addEventListener('click', () => { 
+        const d = DialogBuilder.create()
+            .setTitle('Sistema de Logs')
+            .setBody(this.loggerBody)
+            .setAutoRemove(true)
+            .addFooterButton('Limpiar', () => { 
+                window?.DtClearLogs?.execute(); 
+                this.renderizeLogger(); 
+            })
+            .addFooterButton('Cerrar', () => d.close())
+            .setContentStyles({
+                background: 'rgba(17, 25, 40, 0.98)',
+                backdropFilter: 'blur(10px)',
+                border: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+                boxShadow: `0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.1)`
+            })
+            .show(); 
+        this.loggerBody.scrollDown(); 
+    }); 
+    this.append(l); 
+}
+      addArrowRepeatIcon() { const a = new ArrowRepeatIcon({ fill: PRIMARY_ACCENT_COLOR }); a.addEventListener('click', () => window?.DtStartAppUpdate?.execute()); this.append(a); }
+      addMoreButton() { 
+        const m = new MoreIcon({ fill: PRIMARY_ACCENT_COLOR }); 
+        const sideMenu = new SideMenuComponent();
+        m.addEventListener('click', () => {
+          sideMenu.toggle();
+        }); 
+        this.append(m);
+        document.body.appendChild(sideMenu.element);
+      }
+      renderizeLogger() { const mock = Array.from({ length: 10 }, (_, i) => ({ Time: `Event ${i} logged (${new Date().toLocaleTimeString()})` })); const data = JSON.parse(window?.DtGetLogs?.execute() ?? JSON.stringify(mock)); const items = data.map(log => { const t = Object.keys(log)[0]; const msg = log[t]; return new LoggerItemComponent({}, `${t}: ${msg}`); }); this.loggerBody.setItems(items); }
+    }
+        class SideMenuComponent extends StyledComponent {
+      constructor() {
+        super(document.createElement('div'), {
+          position: 'fixed',
+          top: `${(window?.DtGetStatusBarHeight?.execute() ?? 20)}px`,
+          right: '-250px',
+          width: '250px',
+          height: `calc(100vh - ${(window?.DtGetStatusBarHeight?.execute() ?? 20)}px)`,
+          background: 'rgba(17, 25, 40, 0.95)',
+          boxShadow: `-2px 0 10px rgba(0,0,0,0.3)`,
+          transition: 'right 0.3s ease',
+          zIndex: '9999',
+          padding: '15px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px'
+        });
+
+        // Header container with title and close button
+        const headerContainer = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '15px',
+          borderBottom: `1px solid rgba(${hexToRgb(PRIMARY_ACCENT_COLOR)}, 0.2)`,
+          paddingBottom: '15px'
+        });
+
+        // Title
+        const title = new StyledComponent(document.createElement('h2'), {
+          color: DIALOG_HEADER_TITLE_COLOR,
+          margin: '0',
+          fontSize: '20px',
+          fontWeight: '600',
+          textShadow: `0 0 6px ${DIALOG_HEADER_TITLE_COLOR}77`
+        });
+        title.element.textContent = 'Advanced Tools';
+
+        // Close button
+        const closeButton = new SvgComponent({
+          cursor: 'pointer',
+          height: '24px',
+          width: '24px',
+          fill: DIALOG_HEADER_CLOSE_BUTTON_COLOR,
+          padding: '4px',
+          borderRadius: '4px'
+        }, 'M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z');
+        
+        closeButton.addEventListener('click', () => this.hide());
+        
+        headerContainer.append(title);
+        headerContainer.append(closeButton);
+        this.append(headerContainer);
+
+        // Crear contenedor para los botones
+        const buttonsContainer = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          overflowY: 'auto',
+          flex: '1'
+        });        // Guardar referencia global al menú lateral
+        window.sideMenuInstance = this;
+        
+        // Agregar botones
+        [          
+          new BuyAccessButton(),
+          new ApnSettingButton(),
+          new BatteryButton(),
+          new SpeedTestButton(),
+          new CleanAppButton(),
+          new HotSpotButton(),
+          new SupportButton(),
+          new TermsButton()
+        ].forEach(button => {
+          buttonsContainer.append(button);
+        });
+
+        this.append(buttonsContainer);
+
+        // Añadir overlay oscuro
+        this.overlay = new StyledComponent(document.createElement('div'), {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,0.5)',
+          opacity: '0',
+          visibility: 'hidden',
+          transition: 'opacity 0.3s ease, visibility 0.3s ease',
+          zIndex: '9998'
+        });
+
+        this.overlay.element.addEventListener('click', () => this.hide());
+        document.body.appendChild(this.overlay.element);
+
+        // Ajustar estilos de los botones
+        buttonsContainer.element.querySelectorAll('button').forEach(button => {
+          Object.assign(button.style, {
+            width: '100%',
+            textAlign: 'left',
+            justifyContent: 'flex-start'
+          });
+        });
+      }
+
+      show() {
+        this.element.style.right = '0';
+        this.overlay.setStyles({
+          opacity: '1',
+          visibility: 'visible'
+        });
+      }
+
+      hide() {
+        this.element.style.right = '-250px';
+        this.overlay.setStyles({
+          opacity: '0',
+          visibility: 'hidden'
+        });
+      }
+
+      toggle() {
+        if (this.element.style.right === '0px') {
+          this.hide();
+        } else {
+          this.show();
+        }
+      }
+    }
+
+    class CheckUserDialog {
+      constructor() { this.dialog = DialogBuilder.create().setAutoRemove(true).setTitle('USER INFORMATION').setBody(new Spinner()); }
+      initialize() { window.dtCheckUserStartedListener = () => this.onCheckUserStarted(); window.dtCheckUserModelListener = m => this.onCheckUserModel(m); }
+      onCheckUserStarted() {
+        const cfg = JSON.parse(window?.DtGetDefaultConfig?.execute() ?? '{}');
+        if (!cfg.url_check_user && typeof DtGetDefaultConfig !== 'undefined') {
+          Toast.info("User check URL not configured.");
+        }
+      }
+      onCheckUserModel(model) { const today = new Date(); const futureDateRaw = new Date(today); futureDateRaw.setDate(today.getDate() + (Math.floor(Math.random() * 25) + 5)); const futureDateString = futureDateRaw.toISOString().split('T')[0]; const defaultData = { username: "OceanUser", expiration_date: futureDateString, count_connections: Math.floor(Math.random() * 2) + 1, limit_connections: 3 }; const data = JSON.parse(model ?? JSON.stringify(defaultData)); this.dialog.setTitle(`User: ${data.username || 'N/A'}`).setBody(new CheckUserBodyComponent(data)); }
+    }
+
+    class ConfigBodyComponent extends DialogBodyComponent {
+      constructor(categories = []) {
+        super({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          padding: '20px',
+          maxHeight: 'calc(85vh - 120px)',
+          overflowY: 'auto',
+        });
+        
+        // Contenedor principal para las categorías
+        this.categoriesContainer = new StyledComponent(document.createElement('div'), {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          width: '100%',
+        });
+        
+        // Agregar las categorías
+        categories.forEach(category => {
+          this.categoriesContainer.append(category);
+        });
+        
+        this.append(this.categoriesContainer);
+      }
+    }
+
+    const root = new AppComponent(document.querySelector('#root'));
+    window.onerror = (message, source, lineno, colno, error) => {
+      console.error("Global error:", message, source, lineno, colno, error);
+      Toast.error(`Runtime Error: ${message}`, 5000);
+      return true;
+    };    const topBar = new TopBarInfoComponent();
+    const leftTopContainer = new StyledComponent(document.createElement('div'), { display: 'flex', alignItems: 'center', gap: '18px' });
+    const localIpDisplay = new LocalIPComponent();
+    leftTopContainer.append(localIpDisplay);
+    topBar.append(leftTopContainer);
+    root.append(topBar);
+
+    const card = new CardComponent({ marginTop: '10px' });
+    window.configInputInstance = new ConfigInputComponent(); card.append(window.configInputInstance);
+    window.userPassInputInstance = new UserPassInputComponent(); card.append(window.userPassInputInstance);
+    const tools = new CardToolsComponent(); card.append(tools);
+    const btnStateCont = new ButtonAndStateContainerComponent(); card.append(btnStateCont);
+    root.append(card);    if (window.dtVpnStateListener) { window.dtVpnStateListener(window?.DtGetVpnState?.execute() ?? 'DISCONNECTED'); }
+
+  </script>
+</body>
+
+</html>

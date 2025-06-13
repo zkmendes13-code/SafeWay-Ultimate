@@ -1,97 +1,464 @@
-:root {
-  --bg-color: #667eea;
-  --bg-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --input-border-radius: 6px;
-  --input-background-color: #3105479f;
-  --input-shadow-color: #3105479f;
-  --btn-bg-shadow-color: #3105479f;
-  --btn-bg-hover-shadow-color: #3105479f;
-  --btn-active-bg-color: #0093e9;
-  --modal-content-bg-shadow-color: #4a148ccc;
-  --modal-content-bg-color: #4a148ccc;
-  --config-bg-color: #0000003f;
-  --category-bg-color: #0000003f;
-  --text-color: #ffffff;
-  --icon-color: #ffffff;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh; /* Usar dynamic viewport height */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--bg-color);
-  background-image: var(--bg-image);
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* Evitar scroll en el body */
-  position: fixed; /* Prevenir scroll completamente */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* Optimizaciones para WebView móvil */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /* Respetar safe areas de Android/iOS */
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  /* Optimizaciones para renderizado móvil */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-/* Optimizaciones para pantallas pequeñas */
-@media (max-width: 320px) {
-  body {
-    font-size: 14px; /* Reducir tamaño base de fuente */
+@layer base {
+  /* 🌐 Reset y configuración base */
+  * {
+    box-sizing: border-box;
   }
-}
-
-/* Optimizaciones para altura pequeña */
-@media (max-height: 500px) {
-  body {
-    font-size: 13px;
-  }
-}
-
-/* Ajustes para barras de sistema Android */
-@media (max-height: 600px) and (max-width: 400px) {
-  body {
-    /* Compensar por barra de estado y navegación */
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #0f0f23;
+    color: white;
+    overflow-x: hidden;
   }
   
   #root {
-    height: 100dvh; /* Usar dynamic viewport height si está disponible */
+    height: 100%;
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0f23 100%), 
+                      linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background-attachment: fixed;
+  }
+  
+  /* 📱 Safe areas para dispositivos móviles */
+  @supports (padding-top: env(safe-area-inset-top)) {
+    .safe-area-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .safe-area-left {
+      padding-left: env(safe-area-inset-left);
+    }
+    .safe-area-right {
+      padding-right: env(safe-area-inset-right);
+    }
+    
+    /* Clases adicionales para casos específicos */
+    .safe-area-all {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    
+    .min-h-screen-safe {
+      min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+    
+    .fixed-safe {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      bottom: env(safe-area-inset-bottom);
+      left: env(safe-area-inset-left);
+      right: env(safe-area-inset-right);
+    }
+  }
+  
+  /* 🤖 Configuraciones específicas para Android */
+  @media screen and (max-width: 480px) {
+    /* Asegurar que los elementos fixed respeten las safe areas en Android */
+    .android-safe {
+      padding-top: max(env(safe-area-inset-top), 20px);
+      padding-bottom: max(env(safe-area-inset-bottom), 10px);
+    }
+  }
+  
+  /* 🎯 Evitar problemas de rendimiento en móviles */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+  
+  /* 🔄 Optimización GPU */
+  .gpu-accelerated {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+}
+
+@layer components {
+  /* 🪟 Componentes de glassmorphism */
+  .glass-panel {
+    background-color: rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+  
+  .glass-input {
+    background-color: rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 8px 32px rgba(0, 0, 0, 0.25);
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .glass-input:focus {
+    border-color: rgb(139 92 246 / 1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+  
+  .glass-button {
+    background-color: rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 8px 32px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-button:hover {
+    border-color: rgb(139 92 246 / 1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+  
+  .glass-button:active {
+    transform: scale(0.95);
+  }
+  
+  /* ⚡ Estados de conexión */
+  .status-connected {
+    background-color: rgb(34 197 94 / 0.2);
+    color: rgb(74 222 128);
+    border-color: rgb(34 197 94 / 0.3);
+  }
+  
+  .status-connecting {
+    background-color: rgb(245 158 11 / 0.2);
+    color: rgb(251 191 36);
+    border-color: rgb(245 158 11 / 0.3);
+  }
+  
+  .status-disconnected {
+    background-color: rgb(239 68 68 / 0.2);
+    color: rgb(248 113 113);
+    border-color: rgb(239 68 68 / 0.3);
+  }
+  
+  .status-error {
+    background-color: rgb(239 68 68 / 0.3);
+    color: rgb(252 165 165);
+    border-color: rgb(239 68 68 / 0.5);
+  }
+}
+
+/* Animaciones de glow para el PowerButton */
+.shadow-glow-green {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow-yellow {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Animación de parpadeo para el estado connecting */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ✨ Efectos adicionales de glow y animaciones */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(var(--tw-shadow-color), 0.3); }
+  50% { box-shadow: 0 0 30px rgba(var(--tw-shadow-color), 0.6); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* 🎨 Efectos de hover para botones */
+.btn-glow:hover {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+/* 🌟 Efectos de conexión */
+.connection-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 🎭 Efectos de glassmorphism mejorados */
+.glass-enhanced {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔥 Efectos de estado de conexión */
+.status-connected {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.status-disconnected {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.status-connecting {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1));
+  border-color: rgba(251, 191, 36, 0.3);
+}
+@layer utilities {
+  /* 🎨 Utilidades personalizadas */
+  .text-gradient {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .bg-grid {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(148 163 184 / 0.05)'%3e%3cpath d='m0 .5h32m-32 32v-32'/%3e%3c/svg%3e");
+  }
+  
+  /* 🔄 Animaciones de carga */
+  .pulse-ring {
+    animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+  
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.33);
+    }
+    40%, 50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.2);
+    }
+  }
+  
+  /* 📱 WebView optimizations */
+  .webview-optimized {
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* 📱 Utilidades responsivas específicas para móviles */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .touch-target-lg {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  .safe-spacing {
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  
+  .text-responsive {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+  }
+  
+  .text-responsive-xl {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounceSubtle 0.6s ease-out;
+  }
+  
+  @keyframes bounceSubtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .glass-mobile {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .touch-feedback {
+    transition: all 0.15s ease-out;
+    will-change: transform, background-color;
+  }
+  
+  .touch-feedback:active {
+    transform: scale(0.98);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  /* 📱 Utilidades para texto y scroll en móviles */
+  .truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+    hyphens: auto;
+  }
+  
+  /* 🔒 Prevenir scroll horizontal */
+  .prevent-horizontal-scroll {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+  }
+  
+  /* 📱 Safe area específica para modales */
+  .modal-safe-area {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* 🎯 Logs específicos */
+  .log-container {
+    word-break: break-all;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+  }
+  
+  /* 🔧 Procesamiento de contenido HTML en logs */
+  .log-html-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-height: 150px;
+    overflow-y: auto;
+    line-height: 1.4;
+  }
+
+  .log-html-indicator {
+    opacity: 0.7;
+    font-style: italic;
+    font-size: 0.7rem;
+  }
+
+  /* 📏 Altura máxima para modales en móviles */
+  @media (max-height: 700px) {
+    .modal-mobile-height {
+      max-height: 75vh !important;
+      min-height: 350px !important;
+    }
+  }
+
+  @media (max-height: 600px) {
+    .modal-mobile-height {
+      max-height: 70vh !important;
+      min-height: 320px !important;
+    }
+  }
+
+  @media (max-height: 500px) {
+    .modal-mobile-height {
+      max-height: 65vh !important;
+      min-height: 280px !important;
+    }
+  }
+
+  /* 📜 Estilos personalizados para scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 transparent;
+  }
+  
+  /* WebKit scrollbar styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 15, 35, 0.3);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    border-radius: 3px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  }
+  
+  /* Scrollbar para sidebar */
+  .sidebar-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.6) transparent;
+  }
+  
+  .sidebar-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .sidebar-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 15, 35, 0.2);
+    border-radius: 2px;
+  }
+  
+  .sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.6);
+    border-radius: 2px;
+    backdrop-filter: blur(4px);
+  }
+  
+  .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.8);
   }
 }
