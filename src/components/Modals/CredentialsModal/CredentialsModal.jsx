@@ -111,7 +111,7 @@ const CredentialsModal = ({
                   type="text"
                   value={uuid}
                   onChange={(e) => onUuidChange(e.target.value)}
-                  placeholder="UUID para conexión V2Ray"
+                  placeholder="UUID para conexão V2Ray"
                   disabled={isConnected}
                   className="w-full bg-primary-500/10 backdrop-blur-lg border border-primary-500/20 rounded-xl pl-14 pr-4 py-3 text-white placeholder-vpn-gray-text focus:outline-none focus:border-vpn-green-success/50 focus:bg-primary-500/15 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 />
@@ -127,8 +127,8 @@ const CredentialsModal = ({
               </div>
               <div className="flex-1">
                 <p className="text-xs text-vpn-gray-text leading-relaxed">
-                  Las credenciales se almacenan de forma segura y solo se utilizan para establecer la conexión VPN. 
-                  {showUuid && " El UUID es requerido para conexiones V2Ray."}
+                  As credenciais são armazenadas de forma segura e somente utilizadas para estabelecer a conexão VPN. 
+                  {showUuid && " O UUID é solicitado para conexões V2Ray."}
                 </p>
               </div>
             </div>
@@ -141,7 +141,7 @@ const CredentialsModal = ({
             onClick={onClose}
             className="w-full bg-gradient-to-r from-primary-500 to-accent-500 backdrop-blur-xl border border-primary-500/30 rounded-xl py-3 px-4 text-white font-semibold transition-all duration-300 hover:from-vpn-purple-dark hover:to-primary-500 hover:border-accent-500/50 active:scale-[0.98]"
           >
-            Guardar Credenciales
+            Salvar Credenciais
           </button>
         </div>
       </div>
