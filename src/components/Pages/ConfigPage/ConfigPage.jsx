@@ -176,7 +176,7 @@ const ConfigPage = ({ isOpen, onClose, onConfigSelect, configs, selectedConfig }
               </div>
               <h3 className="text-white text-base sm:text-lg font-medium mb-2 text-center">No se encontraron servidores</h3>
               <p className="text-vpn-gray-text text-xs sm:text-sm text-center max-w-xs px-4">
-                Intenta con un término de búsqueda diferente
+                Tente um termo de pesquisa diferente
               </p>
             </div>
           )}
@@ -192,7 +192,7 @@ const ConfigPage = ({ isOpen, onClose, onConfigSelect, configs, selectedConfig }
               <div className="flex-1 min-w-0">
                 <h3 className="text-white font-semibold text-sm sm:text-base mb-1 break-words">Servidores Premium</h3>
                 <p className="text-vpn-gray-text text-xs sm:text-sm leading-relaxed break-words">
-                  Accede a servidores de alta velocidad con ancho de banda ilimitado y conexiones estables.
+                  Acesse servidores de alta velocidade com largura de banda ilimitada e conexões estáveis.
                 </p>
                 <div className="flex flex-col xs:flex-row xs:items-center mt-3 space-y-2 xs:space-y-0 xs:space-x-4">
                   <div className="flex items-center space-x-2">
@@ -201,7 +201,7 @@ const ConfigPage = ({ isOpen, onClose, onConfigSelect, configs, selectedConfig }
                   </div>
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-infinity text-accent-500 text-xs"></i>
-                    <span className="text-accent-500 text-xs font-medium">Sin límites</span>
+                    <span className="text-accent-500 text-xs font-medium">Sem limites</span>
                   </div>
                 </div>
               </div>
@@ -238,7 +238,7 @@ const CategoryItem = React.memo(({ category, categoryIndex, isExpanded, onToggle
     return countryMap[name] || '🌍';
   };
 
-  const activeServers = category.items?.filter(item => item.status === 'ACTIVO').length || 0;
+  const activeServers = category.items?.filter(item => item.status === 'ATIVO').length || 0;
   const totalServers = category.items?.length || 0;
   const hasSelectedServer = category.items?.some(item => item.name === selectedConfig) || false;
 
@@ -261,7 +261,7 @@ const CategoryItem = React.memo(({ category, categoryIndex, isExpanded, onToggle
               <div className="flex items-center space-x-1">
                 <div className={`w-2 h-2 rounded-full ${hasSelectedServer ? 'bg-accent-400 animate-pulse' : 'bg-vpn-green-success'}`}></div>
                 <span className={`text-xs sm:text-sm font-medium ${hasSelectedServer ? 'text-accent-400' : 'text-vpn-green-success'}`}>
-                  {hasSelectedServer ? '1 seleccionado' : `${activeServers} disponibles`}
+                  {hasSelectedServer ? '1 selecionado' : `${activeServers} disponibles`}
                 </span>
               </div>
               <div className="hidden xs:block w-1 h-1 bg-vpn-gray-text/50 rounded-full"></div>
@@ -344,7 +344,7 @@ const ServerItemCard = React.memo(({ item, onSelect, searchTerm, isSelected }) =
           <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-dark-800 ${
             isSelected 
               ? 'bg-accent-400' 
-              : item.status === 'ACTIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
+              : item.status === 'ATIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
           }`}></div>
         </div>
         
@@ -368,7 +368,7 @@ const ServerItemCard = React.memo(({ item, onSelect, searchTerm, isSelected }) =
             <div className={`px-2 py-1 rounded-md text-xs font-medium flex-shrink-0 inline-block ${
               isSelected
                 ? 'bg-accent-500/20 text-accent-400 border border-accent-500/30'
-                : item.status === 'ACTIVO' 
+                : item.status === 'ATIVO' 
                   ? 'bg-vpn-green-success/20 text-vpn-green-success border border-vpn-green-success/30' 
                   : 'bg-vpn-red-error/20 text-vpn-red-error border border-vpn-red-error/30'
             }`}>
@@ -376,9 +376,9 @@ const ServerItemCard = React.memo(({ item, onSelect, searchTerm, isSelected }) =
                 <div className={`w-1.5 h-1.5 rounded-full ${
                   isSelected 
                     ? 'bg-accent-400' 
-                    : item.status === 'ACTIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
+                    : item.status === 'ATIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
                 }`}></div>
-                <span>{isSelected ? 'SELECCIONADO' : (item.status || 'N/A')}</span>
+                <span>{isSelected ? 'SELECIONADO' : (item.status || 'N/A')}</span>
               </div>
             </div>
           </div>
@@ -424,7 +424,7 @@ const ServerItem = React.memo(({ item, isLast, onSelect, searchTerm, isSelected 
         <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-dark-800 ${
           isSelected 
             ? 'bg-accent-400' 
-            : item.status === 'ACTIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
+            : item.status === 'ATIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
         }`}></div>
       </div>
       
@@ -452,7 +452,7 @@ const ServerItem = React.memo(({ item, isLast, onSelect, searchTerm, isSelected 
         <div className={`px-2 py-1 rounded-md text-xs font-medium ${
           isSelected
             ? 'bg-accent-500/20 text-accent-400 border border-accent-500/30'
-            : item.status === 'ACTIVO' 
+            : item.status === 'ATIVO' 
               ? 'bg-vpn-green-success/20 text-vpn-green-success border border-vpn-green-success/30' 
               : 'bg-vpn-red-error/20 text-vpn-red-error border border-vpn-red-error/30'
         }`}>
@@ -460,9 +460,9 @@ const ServerItem = React.memo(({ item, isLast, onSelect, searchTerm, isSelected 
             <div className={`w-1.5 h-1.5 rounded-full ${
               isSelected 
                 ? 'bg-accent-400' 
-                : item.status === 'ACTIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
+                : item.status === 'ATIVO' ? 'bg-vpn-green-success' : 'bg-vpn-red-error'
             }`}></div>
-            <span className="hidden xs:inline">{isSelected ? 'SELECCIONADO' : (item.status || 'N/A')}</span>
+            <span className="hidden xs:inline">{isSelected ? 'SELECIONADO' : (item.status || 'N/A')}</span>
           </div>
         </div>
         <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-500/20 rounded-md flex items-center justify-center">
