@@ -19,7 +19,7 @@ const InputFields = ({
 
   return (
     <>
-      {/* Selector de Servidor - Flotante */}
+      {/* Selecionar  Servidor - Flotante */}
       <div className="fixed bottom-4 left-4 right-4 safe-area-bottom z-30">
         <button
           onClick={onConfigClick}
@@ -30,13 +30,13 @@ const InputFields = ({
             {/* Información del servidor */}
             <div className="flex-1 min-w-0">
               <div className="text-[#8b5cf6] text-sm font-medium mb-1">
-                Servidor Seleccionado
+                Servidor Selecionado
               </div>
               <div className="text-white font-semibold text-base truncate">
                 {config}
               </div>
               <div className="text-[#a855f7]/70 text-xs mt-1">
-                Toca para cambiar servidor
+                Toque para escolher o servidor
               </div>
             </div>
             
