@@ -35,13 +35,13 @@ const ServerRequiredModal = ({ isOpen, onClose, onOpenConfig }) => {
             {/* Message */}
             <div className="space-y-2">
               <h3 className="text-base xs:text-lg font-semibold text-white">
-                Selecciona un Servidor
+                Seleione um Servidor
               </h3>
               <p className="text-gray-300 text-xs xs:text-sm leading-relaxed px-1">
-                Antes de conectarte, debes elegir un servidor VPN desde la configuración.
+                Antes de se conectar, você deve escolher um servidor VPN na configuração.
               </p>
               <p className="text-gray-400 text-xs leading-relaxed px-1">
-                Ve a Configuración para seleccionar el servidor que deseas usar.
+                Veja uma Configuração para selecionar o servidor que você deseja usar.
               </p>
             </div>
 
@@ -49,7 +49,7 @@ const ServerRequiredModal = ({ isOpen, onClose, onOpenConfig }) => {
             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-3 xs:p-4 mt-3 xs:mt-4">
               <div className="flex items-center justify-center space-x-1 xs:space-x-2 text-blue-300">
                 <i className="fas fa-cog text-xs xs:text-sm"></i>
-                <span className="text-xs xs:text-sm">Configuración → Servidores</span>
+                <span className="text-xs xs:text-sm">Configurações → Servidores</span>
                 <i className="fas fa-server text-blue-400 text-xs xs:text-sm"></i>
               </div>
             </div>
@@ -63,14 +63,14 @@ const ServerRequiredModal = ({ isOpen, onClose, onOpenConfig }) => {
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2.5 xs:py-3 px-3 xs:px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-blue-500/25 text-sm xs:text-base"
           >
             <i className="fas fa-cog mr-1 xs:mr-2 text-sm xs:text-base"></i>
-            <span className="text-xs xs:text-sm sm:text-base">Ir a Configuración</span>
+            <span className="text-xs xs:text-sm sm:text-base">Ir para Configurações</span>
           </button>
           
           <button
             onClick={onClose}
             className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-medium py-2 xs:py-2.5 px-3 xs:px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 text-sm xs:text-base"
           >
-            <span className="text-xs xs:text-sm sm:text-base">Cerrar</span>
+            <span className="text-xs xs:text-sm sm:text-base">Fechar</span>
           </button>
         </div>
       </div>
