@@ -22,7 +22,7 @@ const UserCheckModal = ({ isOpen, onClose, userData, isLoading }) => {
 
   // Función SIMPLE para calcular días restantes
   const getDaysRemainingInfo = (expirationDate, expiration_days) => {
-    console.log('📅 MODAL: Fecha recibida:', expirationDate, 'Tipo:', typeof expirationDate);
+    console.log('📅: Data de Vencimento:', expirationDate, 'Tipo:', typeof expirationDate);
     
     if (!expirationDate) return { text: 'N/A', color: 'text-gray-400' };
     
@@ -49,13 +49,13 @@ const UserCheckModal = ({ isOpen, onClose, userData, isLoading }) => {
       expiry = new Date(expirationDate);
     }
     
-    console.log('📅 MODAL: Fecha parseada:', expiry);
-    console.log('📅 MODAL: Es válida?', !isNaN(expiry.getTime()));
+    console.log('📅: Data analisada:', expiry);
+    console.log('📅: Esta na validade?', !isNaN(expiry.getTime()));
     
     // Validar que la fecha sea válida
     if (isNaN(expiry.getTime())) {
-      console.log('❌ MODAL: Fecha inválida detectada');
-      return { text: 'Fecha inválida', color: 'text-red-400' };
+      console.log('❌ :eData invalida  detectada');
+      return { text: 'Data Invalida', color: 'text-red-400' };
     }
     
     // Crear fecha de hoy limpia (solo fecha, sin horas)
@@ -69,23 +69,23 @@ const UserCheckModal = ({ isOpen, onClose, userData, isLoading }) => {
     const diffTime = expiry.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    console.log('🧮 MODAL: Días calculados:', diffDays);
+    console.log('🧮 : Dias calculados:', diffDays);
     
     // Mostrar resultado según los días
     if (diffDays < 0) {
       return { 
-        text: `Expirado hace ${Math.abs(diffDays)} día(s)`, 
+        text: `Expirado a ${Math.abs(diffDays)} día(s)`, 
         color: 'text-red-400' 
       };
     } else if (diffDays === 0) {
       return { 
-        text: 'Expira hoy', 
+        text: 'Expira hoje', 
         color: 'text-yellow-400' 
       };
     } else {
       const color = diffDays <= 7 ? 'text-yellow-400' : 'text-green-400';
       return { 
-        text: `${diffDays} día(s) restante(s)`, 
+        text: `${diffDays} dia(s) restante(s)`, 
         color 
       };
     }
@@ -219,7 +219,7 @@ const UserCheckModal = ({ isOpen, onClose, userData, isLoading }) => {
               <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 flex items-center justify-center mb-4">
                 <i className="fas fa-exclamation-triangle text-red-400 text-xl"></i>
               </div>
-              <p className="text-red-400 text-center text-sm">No se pudo obtener la información</p>
+              <p className="text-red-400 text-center text-sm">Não consegui obter as informações.</p>
             </div>
           )}
         </div>
