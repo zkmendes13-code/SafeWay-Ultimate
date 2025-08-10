@@ -13,12 +13,12 @@ const LogsPage = ({ isOpen, onClose, logs, onClearLogs }) => {
         >
           <i className="fas fa-arrow-left text-white text-sm"></i>
         </button>
-        <h2 className="text-white text-lg font-bold">Logs del Sistema</h2>
+        <h2 className="text-white text-lg font-bold">Logs do Sistema</h2>
         <button
           onClick={onClearLogs}
           className="px-3 py-1 bg-vpn-red-error/20 text-vpn-red-error text-xs rounded-lg hover:bg-vpn-red-error/30 transition-colors"
         >
-          Limpiar
+          Limpar
         </button>
       </div>
 
@@ -30,7 +30,7 @@ const LogsPage = ({ isOpen, onClose, logs, onClearLogs }) => {
               <div className="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center mb-3">
                 <i className="fas fa-file-alt text-primary-500 text-lg"></i>
               </div>
-              <p className="text-vpn-gray-text text-sm">No hay logs disponibles</p>
+              <p className="text-vpn-gray-text text-sm">Sem logs disponível</p>
             </div>
           ) : (
             <div className="space-y-2 pb-4">
