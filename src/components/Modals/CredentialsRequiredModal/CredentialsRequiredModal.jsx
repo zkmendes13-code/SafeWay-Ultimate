@@ -13,7 +13,7 @@ const CredentialsRequiredModal = ({ isOpen, onClose, onOpenCredentials }) => {
               <div className="w-8 h-8 xs:w-10 xs:h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <i className="fas fa-exclamation-triangle text-white text-sm xs:text-lg"></i>
               </div>
-              <h2 className="text-sm xs:text-lg sm:text-xl font-bold text-white truncate">Credenciales Requeridas</h2>
+              <h2 className="text-sm xs:text-lg sm:text-xl font-bold text-white truncate">Credenciais Requeridas</h2>
             </div>
             <button 
               onClick={onClose}
@@ -35,13 +35,13 @@ const CredentialsRequiredModal = ({ isOpen, onClose, onOpenCredentials }) => {
             {/* Message */}
             <div className="space-y-2">
               <h3 className="text-base xs:text-lg font-semibold text-white">
-                Faltan Credenciales
+                Coloque suas Credenciais
               </h3>
               <p className="text-gray-300 text-xs xs:text-sm leading-relaxed px-1">
-                Para conectarte a la VPN, primero debes configurar tus credenciales de acceso.
+                Para se conectar à VPN, primeiro você deve configurar suas credenciais de acesso.
               </p>
               <p className="text-gray-400 text-xs leading-relaxed px-1">
-                Haz clic en el botón de llave 🔑 en la parte superior derecha para ingresar tus datos.
+                Clique no botão de chave 🔑 na parte superior direita para inserir seus dados.
               </p>
             </div>
 
@@ -49,7 +49,7 @@ const CredentialsRequiredModal = ({ isOpen, onClose, onOpenCredentials }) => {
             <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-3 xs:p-4 mt-3 xs:mt-4">
               <div className="flex items-center justify-center space-x-1 xs:space-x-2 text-purple-300">
                 <i className="fas fa-arrow-up text-xs xs:text-sm"></i>
-                <span className="text-xs xs:text-sm">Busca el botón de credenciales</span>
+                <span className="text-xs xs:text-sm">Pesquisar o botão de credenciais</span>
                 <i className="fas fa-key text-purple-400 text-xs xs:text-sm"></i>
               </div>
             </div>
@@ -63,7 +63,7 @@ const CredentialsRequiredModal = ({ isOpen, onClose, onOpenCredentials }) => {
             className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium py-2.5 xs:py-3 px-3 xs:px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-purple-500/25 text-sm xs:text-base"
           >
             <i className="fas fa-key mr-1 xs:mr-2 text-sm xs:text-base"></i>
-            <span className="text-xs xs:text-sm sm:text-base">Configurar Credenciales</span>
+            <span className="text-xs xs:text-sm sm:text-base">Configurar Credenciais</span>
           </button>
           
           <button
