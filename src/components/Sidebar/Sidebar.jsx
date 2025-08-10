@@ -62,7 +62,7 @@ const Sidebar = ({
           </g>
         </svg>
       ), 
-      text: 'Comprar Acceso', 
+      text: 'Comprar Acesso', 
       action: () => {
         console.log('🛒 Abrir modal de precios');
         setIsPricingModalOpen(true);
@@ -103,7 +103,7 @@ const Sidebar = ({
           </g>
         </svg>
       ), 
-      text: 'Precios Mayorista', 
+      text: 'Seja Revendedor', 
       action: () => {
         console.log('💼 Abrir precios para reventa');
         setIsWholesalePageOpen(true);
@@ -225,7 +225,7 @@ const Sidebar = ({
           </g>
         </svg>
       ), 
-      text: 'Actualizar', 
+      text: 'Atualizar', 
       action: onUpdate 
     },
     { 
@@ -242,7 +242,7 @@ const Sidebar = ({
           </g>
         </svg>
       ), 
-      text: 'Optimizar Batería', 
+      text: 'Otimizar Bateria', 
       action: onBatteryOptimization 
     },
   ];
@@ -343,7 +343,7 @@ const Sidebar = ({
               {/* Sección de acciones simplificada */}
               <div className="space-y-1 mb-6">
                 <div className="text-xs font-semibold text-vpn-gray-text uppercase tracking-wider mb-3 px-2">
-                  ⚡ Acciones
+                  ⚡ Mais Opções
                 </div>
                 {actionItems.map((item, index) => (
                   <button 
@@ -368,7 +368,7 @@ const Sidebar = ({
               {/* Información de estado simplificada */}
               <div className="space-y-3 mb-4">
                 <div className="text-xs font-semibold text-vpn-gray-text uppercase tracking-wider mb-3 px-2">
-                  📊 Estado
+                  📊 Status
                 </div>
                 
                 {/* Estado VPN simple */}
@@ -387,7 +387,7 @@ const Sidebar = ({
                         </span>
                       </div>
                       <div>
-                        <div className="text-xs text-vpn-gray-text mb-1">Estado VPN</div>
+                        <div className="text-xs text-vpn-gray-text mb-1">Status VPN</div>
                         <div className={`text-sm font-bold transition-all duration-300 ${
                           connectionState === 'CONNECTED' ? 'text-vpn-green-success' :
                           connectionState === 'CONNECTING' ? 'text-accent-500' :
@@ -453,7 +453,7 @@ const Sidebar = ({
                 <span className="text-sm">🚪</span>
               </div>
               <span className="font-medium text-sm sm:text-base">
-                Cerrar
+                Fechar
               </span>
             </button>
           </div>
@@ -474,7 +474,7 @@ const Sidebar = ({
       />
 
       {/* Página de PlayTV */}
-      <PlayTVPage
+      <PlayTV Página 
         isOpen={isPlayTVPageOpen}
         onClose={() => setIsPlayTVPageOpen(false)}
       />
