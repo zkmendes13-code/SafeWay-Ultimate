@@ -44,7 +44,7 @@ const InputFields = ({
             <div className="flex items-center space-x-3 flex-shrink-0">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-[#7c3aed] rounded-full"></div>
-                <span className="text-[#a855f7] text-xs font-medium">Activo</span>
+                <span className="text-[#a855f7] text-xs font-medium">Ativo</span>
               </div>
               <div className="w-6 h-6 bg-[#8b5cf6]/20 rounded-md flex items-center justify-center">
                 <span className="text-[#8b5cf6] text-xs">›</span>
