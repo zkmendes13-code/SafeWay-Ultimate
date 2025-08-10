@@ -245,14 +245,14 @@ function App() {
   // Función para cargar configuraciones del servidor
   const loadConfigs = () => {
     try {
-      console.log('🔧 Intentando cargar configuraciones del servidor...');
+      console.log('🔧 Tentando carregar as configurações do servidor...');
       
       // Intentar obtener configuraciones del servidor
       const serverConfigs = window?.DtGetConfigs?.execute();
       
       if (serverConfigs) {
         const data = JSON.parse(serverConfigs);
-        console.log('📡 Configuraciones cargadas del servidor:', data);
+        console.log('📡 Configurações do servidor carregadas:', data);
         
         // Ordenar por sorter
         data.sort((a, b) => a.sorter - b.sorter);
@@ -262,11 +262,11 @@ function App() {
         return true;
       }
     } catch (error) {
-      console.error('❌ Error al cargar configuraciones del servidor:', error);
+      console.error('❌ Erro ao carregar as configurações do servidor:', error);
     }
     
     // Usar datos mock como fallback
-    console.log('⚠️ Usando configuraciones mock como fallback');
+    console.log('⚠️ Usando configurações simuladas como fallback');
     const mockConfigs = [
       {
         "sorter": 6,
