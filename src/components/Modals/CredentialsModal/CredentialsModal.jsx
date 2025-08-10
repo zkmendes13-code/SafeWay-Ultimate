@@ -27,7 +27,7 @@ const CredentialsModal = ({
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500/30 to-accent-500/30 rounded-lg flex items-center justify-center border border-primary-500/20">
               <i className="fas fa-key text-accent-500 text-sm"></i>
             </div>
-            <h2 className="text-base xs:text-lg sm:text-xl font-bold text-white tracking-wide">CREDENCIALES</h2>
+            <h2 className="text-base xs:text-lg sm:text-xl font-bold text-white tracking-wide">CREDENCIAIS</h2>
           </div>
           <button 
             className="flex items-center justify-center w-7 h-7 xs:w-8 xs:h-8 rounded-lg bg-white/10 hover:bg-primary-500/20 transition-all duration-300 active:scale-95 text-white border border-white/10"
@@ -55,7 +55,7 @@ const CredentialsModal = ({
                   type="text"
                   value={username}
                   onChange={(e) => onUsernameChange(e.target.value)}
-                  placeholder="Ingrese su usuario"
+                  placeholder="Coloque seu usuario"
                   disabled={isConnected}
                   className="w-full bg-primary-500/10 backdrop-blur-lg border border-primary-500/20 rounded-xl pl-14 pr-4 py-3 text-white placeholder-vpn-gray-text focus:outline-none focus:border-accent-500/50 focus:bg-primary-500/15 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 />
@@ -79,7 +79,7 @@ const CredentialsModal = ({
                   type={showPasswordText ? "text" : "password"}
                   value={password}
                   onChange={(e) => onPasswordChange(e.target.value)}
-                  placeholder="Ingrese su contraseña"
+                  placeholder="Coloque sua senha"
                   disabled={isConnected}
                   className="w-full bg-primary-500/10 backdrop-blur-lg border border-primary-500/20 rounded-xl pl-14 pr-14 py-3 text-white placeholder-vpn-gray-text focus:outline-none focus:border-accent-500/50 focus:bg-primary-500/15 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 />
