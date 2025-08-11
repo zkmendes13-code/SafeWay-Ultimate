@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PricingPage from '../PricingPage/PricingPage';
-import WholesalePricingPage from '../Pages/WholesalePricingPage/WholesalePricingPage';
-// import PlayTVPage from '../Pages/PlayTVPage/PlayTVPage';
+import WholesalePricingPage from '../Pages/WholesalePricingPage/WholesalePricingPage'; import PlayTVPage from '../Pages/PlayTVPage/PlayTVPage';
 
 const Sidebar = ({ 
   isOpen, 
